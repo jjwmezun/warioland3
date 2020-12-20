@@ -22,6 +22,10 @@
                 <li class="wl3-site-nav-list-item wl3-site-nav-list-item-downloads"><a class="wl3-site-nav-link wl3-site-nav-link-downloads" href="downloads.html">Downloads</a></li>
             </ul>
         </nav>
+        <form action="/search/", method="get">
+            <input type="text" name="query">
+            <input type="submit" value="¡Search!">
+        </form>
         <section class="wl3-primary">{% block content %}{% endblock %}</section>
         <footer class="wl3-footer">
             <div class="wl3-footer-content">

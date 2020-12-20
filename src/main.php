@@ -42,6 +42,10 @@ if ( in_array( $path, [ '', '/' ] ) )
 {
     $content = ( new Template( 'page', [ 'page' => Page::getPageBySlug( 'home' ) ] ) )->getHtml();
 }
+else if ( $path === 'search/' )
+{
+    $content = ( new Template( 'search', [ 'query' => $request->query->get( 'query' ) ] ) )->getHtml();
+}
 else
 {
     $content = ( new Template( '404' ) )->getHtml();
