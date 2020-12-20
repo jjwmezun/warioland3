@@ -1,0 +1,19 @@
+{
+    "name": "jjwmezun/warioland3",
+    "type": "project",
+    "authors": [
+        {
+            "name": "J. J. W. Mezun",
+            "email": "jjwmezun@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "^5.2",
+        "twig/twig": "^3.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "WarioLand3\\": "src/modules/"
+        }
+    }
+}
