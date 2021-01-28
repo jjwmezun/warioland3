@@ -66,14 +66,22 @@ else if ( str_starts_with( $path, 'level/' ) ) // Handle individual level page.
 {    
     $slug = str_replace( '/', '', str_replace( 'level/', '', $path ) );
     $level = LevelFactory::getLevelBySlug( $slug );
-    $content = ( $level ) ? Template::generate( 'level', [ 'level' => $level ] ) : Template::generate( '404' );
+    if ( $level )
+    {
+        $content = Template::generate( 'level', [ 'level' => $level ] );
+    }
 }
 else
 {
     $slug = str_replace( '/', '', $path );
     $page = PageFactory::getPageBySlug( $slug );
-    $content = ( $page ) ? Template::generate( 'page', [ 'page' => $page ] ) : Template::generate( '404' );
+    if ( $page )
+    {
+        $content = Template::generate( 'page', [ 'page' => $page ] );
+    }
 }
 
-$response = new Response( $content );
+$response = ( empty( $content ) )
+    ? new Response( Template::generate( '404' ), Response::HTTP_NOT_FOUND )
+    : $response = new Response( $content, Response::HTTP_OK );
 return $response->send();
