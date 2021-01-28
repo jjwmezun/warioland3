@@ -12,13 +12,13 @@ class RegionFactory
 
     public static function getRegionByCode( string $code ) : ?Region
     {
-        $data = Connection::selectOne( 'region', 'region_code', $code );
+        $data = Connection::selectOne( 'region', [ ParameterBinding::createStringBinding( 'region_code', strtoupper( $code ) ) ] );
         return ( !empty( $data ) ) ? self::getRegionFromData( $data ) : null;
     }
 
     public static function getRegionById( int $id ) : ?Region
     {
-        $data = Connection::selectOne( 'region', 'region_id', $id );
+        $data = Connection::selectOne( 'region', [ ParameterBinding::createIntBinding( 'region_id', $id ) ] );
         return ( !empty( $data ) ) ? self::getRegionFromData( $data ) : null;
     }
 

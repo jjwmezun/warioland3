@@ -7,11 +7,17 @@ class Level
 {
     public function __construct
     (
+        private int $id,
         private string $name,
         private string $slug,
         private int $number,
         private Region|int $region
     ) {}
+
+    public function getId() : int
+    {
+        return $this->id;
+    }
 
     public function getName() : string
     {

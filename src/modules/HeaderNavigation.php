@@ -45,6 +45,7 @@ class HeaderNavigation
     [
         [ 'url' => '', 'title' => 'About' ],
         [ 'url' => 'levels', 'title' => 'Levels' ],
+        [ 'url' => 'treasures', 'title' => 'Treasures' ],
         [ 'slug' => 'minigolf' ]
     ];
 }

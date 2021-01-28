@@ -25,6 +25,11 @@ class ParameterBinding
         $statement->bindParam( $this->name, $this->value, $this->type );
     }
 
+    public function getName() : string|int
+    {
+        return $this->name;
+    }
+
 
 
     //

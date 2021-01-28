@@ -7,16 +7,38 @@ class LevelFactory
 {
     public static function getLevelBySlug( string $slug ) : ?Level
     {
-        $data = Connection::selectOne( 'level', 'level_slug', $slug );
-        return ( !empty( $data ) ) ? new Level( $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ 'level_region_id' ] ) : null;
+        $data = Connection::selectOne( 'level', [ ParameterBinding::createStringBinding( 'level_slug', $slug ) ] );
+        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ 'level_region_id' ] ) : null;
+    }
+
+    public static function getLevelById( int $id ) : ?Level
+    {
+        $data = Connection::selectOne( 'level', [ ParameterBinding::createIntBinding( 'level_id', $id ) ] );
+        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ 'level_region_id' ] ) : null;
+    }
+
+    public static function getLevelByCode( string $code ) : ?Level
+    {
+        $regionCode = substr( $code, 0, 1 );
+        $numberCode = intval( substr( $code, 1, 1 ) );
+        $region = RegionFactory::getRegionByCode( $regionCode );
+        $data = Connection::selectOne
+        (
+            'level',
+            [
+                ParameterBinding::createIntBinding( 'level_region_id', $region->getId() ),
+                ParameterBinding::createIntBinding( 'level_order', $numberCode )
+            ]
+        );
+        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region ) : null;
     }
 
     public static function getLevelsByRegion( Region $region ) : array
     {
         return array_map
         (
-            fn( array $data ) => new Level( $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region ),
-            Connection::selectAllWhere( "level", "level_region_id", $region->getId(), "int" )
+            fn( array $data ) => new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region ),
+            Connection::selectAllWhere( "level", [ ParameterBinding::createIntBinding( "level_region_id", $region->getId() ) ] )
         );
     }
 

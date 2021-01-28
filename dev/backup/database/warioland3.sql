@@ -121,6 +121,65 @@ ALTER TABLE public.region ALTER COLUMN region_id ADD GENERATED ALWAYS AS IDENTIT
 
 
 --
+-- Name: treasure; Type: TABLE; Schema: public; Owner: warioland3
+--
+
+CREATE TABLE public.treasure (
+    treasure_id integer NOT NULL,
+    treasure_name character varying(255) NOT NULL,
+    treasure_slug character varying(255) NOT NULL,
+    treasure_level_id integer NOT NULL,
+    treasure_color_id integer NOT NULL,
+    treasure_purpose text NOT NULL,
+    treasure_game_order integer NOT NULL,
+    treasure_sequence_order integer NOT NULL
+);
+
+
+ALTER TABLE public.treasure OWNER TO warioland3;
+
+--
+-- Name: treasure_color; Type: TABLE; Schema: public; Owner: warioland3
+--
+
+CREATE TABLE public.treasure_color (
+    treasure_color_id integer NOT NULL,
+    treasure_color_name character varying(255) NOT NULL,
+    treasure_color_order integer NOT NULL
+);
+
+
+ALTER TABLE public.treasure_color OWNER TO warioland3;
+
+--
+-- Name: treasure_color_treasure_color_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE public.treasure_color ALTER COLUMN treasure_color_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.treasure_color_treasure_color_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: treasure_treasure_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE public.treasure ALTER COLUMN treasure_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.treasure_treasure_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
 -- Data for Name: level; Type: TABLE DATA; Schema: public; Owner: warioland3
 --
 
@@ -184,6 +243,27 @@ COPY public.region (region_id, region_name, region_code, region_order) FROM stdi
 
 
 --
+-- Data for Name: treasure; Type: TABLE DATA; Schema: public; Owner: warioland3
+--
+
+COPY public.treasure (treasure_id, treasure_name, treasure_slug, treasure_level_id, treasure_color_id, treasure_purpose, treasure_game_order, treasure_sequence_order) FROM stdin;
+1	1st Music Box	1st-music-box	23	1	Opens level [level s2].	1	10
+\.
+
+
+--
+-- Data for Name: treasure_color; Type: TABLE DATA; Schema: public; Owner: warioland3
+--
+
+COPY public.treasure_color (treasure_color_id, treasure_color_name, treasure_color_order) FROM stdin;
+1	Gray	1
+2	Red	2
+3	Green	3
+4	Blue	4
+\.
+
+
+--
 -- Name: level_level_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
 --
 
@@ -202,6 +282,20 @@ SELECT pg_catalog.setval('public.page_page_id_seq', 2, true);
 --
 
 SELECT pg_catalog.setval('public.region_region_id_seq', 4, true);
+
+
+--
+-- Name: treasure_color_treasure_color_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
+--
+
+SELECT pg_catalog.setval('public.treasure_color_treasure_color_id_seq', 4, true);
+
+
+--
+-- Name: treasure_treasure_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
+--
+
+SELECT pg_catalog.setval('public.treasure_treasure_id_seq', 1, true);
 
 
 --
@@ -245,6 +339,70 @@ ALTER TABLE ONLY public.region
 
 
 --
+-- Name: treasure_color treasure_color_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure_color
+    ADD CONSTRAINT treasure_color_pkey PRIMARY KEY (treasure_color_id);
+
+
+--
+-- Name: treasure_color treasure_color_treasure_color_name_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure_color
+    ADD CONSTRAINT treasure_color_treasure_color_name_key UNIQUE (treasure_color_name);
+
+
+--
+-- Name: treasure_color treasure_color_treasure_color_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure_color
+    ADD CONSTRAINT treasure_color_treasure_color_order_key UNIQUE (treasure_color_order);
+
+
+--
+-- Name: treasure treasure_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_pkey PRIMARY KEY (treasure_id);
+
+
+--
+-- Name: treasure treasure_treasure_game_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_treasure_game_order_key UNIQUE (treasure_game_order);
+
+
+--
+-- Name: treasure treasure_treasure_name_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_treasure_name_key UNIQUE (treasure_name);
+
+
+--
+-- Name: treasure treasure_treasure_sequence_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_treasure_sequence_order_key UNIQUE (treasure_sequence_order);
+
+
+--
+-- Name: treasure treasure_treasure_slug_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_treasure_slug_key UNIQUE (treasure_slug);
+
+
+--
 -- Name: password_resets_email_index; Type: INDEX; Schema: public; Owner: warioland3
 --
 
@@ -257,6 +415,22 @@ CREATE INDEX password_resets_email_index ON public.password_resets USING btree (
 
 ALTER TABLE ONLY public.level
     ADD CONSTRAINT level_level_region_id_fkey FOREIGN KEY (level_region_id) REFERENCES public.region(region_id);
+
+
+--
+-- Name: treasure treasure_treasure_color_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_treasure_color_id_fkey FOREIGN KEY (treasure_color_id) REFERENCES public.treasure_color(treasure_color_id);
+
+
+--
+-- Name: treasure treasure_treasure_level_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.treasure
+    ADD CONSTRAINT treasure_treasure_level_id_fkey FOREIGN KEY (treasure_level_id) REFERENCES public.level(level_id);
 
 
 --

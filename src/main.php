@@ -42,9 +42,18 @@ if ( in_array( $path, [ '', '/' ] ) ) // Make root URL go to home page.
 {
     $content = Template::generate( 'page', [ 'page' => PageFactory::getPageBySlug( 'home' ) ] );
 }
+/*
+else if ( $path === 'reset/treasures/' )
+{
+    return TreasureFactory::resetTreasureTable();
+}*/
 else if ( $path === 'levels/' ) // Go to hard-coded levels page.
 {
     $content = Template::generate( 'levels-archive', [ 'regions' => RegionFactory::getAllRegions() ] );
+}
+else if ( $path === 'treasures/' ) // Go to hard-coded treasures page.
+{
+    $content = Template::generate( 'treasures', [ 'treasures' => TreasureFactory::getAllTreasures() ] );
 }
 else if ( $path === 'search/' ) // Redirect search page with GET query to cleaner URL.
 {

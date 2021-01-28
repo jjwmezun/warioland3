@@ -7,7 +7,7 @@ class PageFactory
 {
     static public function getPageBySlug( string $slug ) : ?Page
     {
-        $data = Connection::selectOne( 'page', 'page_slug', $slug );
+        $data = Connection::selectOne( 'page', [ ParameterBinding::createStringBinding( 'page_slug', $slug ) ] );
         return ( !empty( $data ) ) ? self::createPageFromData( $data ) : null;
     }
 
