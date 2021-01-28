@@ -54,7 +54,9 @@ else if ( $path === 'search/' )
 }
 else
 {
-    $content = ( new Template( '404' ) )->getHtml();
+    $slug = str_replace( '/', '', $path );
+    $page = PageFactory::getPageBySlug( $slug );
+    $content = ( ( $page ) ? new Template( 'page', [ 'page' => $page ] ) : new Template( '404' ) )->getHtml();
 }
 
 $response = new Response( $content );

@@ -9,19 +9,16 @@
         <link href="css/index.css" rel="stylesheet" />
     </head>
     <body class="wl3-body">
-        <header class="wl3-site-header"><h1 class="wl3-site-header-title">Wario Land 3</h1></header>
-        <nav id="wl3-site-nav" class="wl3-site-nav">
-            <ul class="wl3-site-nav-list">
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-about"><a class="wl3-site-nav-link wl3-site-nav-link-about" href="index.html">About</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-abilities"><a class="wl3-site-nav-link wl3-site-nav-link-abilities" href="controls-and-abilities.html">Controls & Abilities</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-enemies"><a class="wl3-site-nav-link wl3-site-nav-link-enemies" href="enemies.html">Enemies</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-status"><a class="wl3-site-nav-link wl3-site-nav-link-status" href="status-effects.html">Status Effects</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-levels"><a class="wl3-site-nav-link wl3-site-nav-link-levels" href="levels.html">Levels</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-treasures"><a class="wl3-site-nav-link wl3-site-nav-link-treasures" href="treasures.html">Treasure List</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-minigolf"><a class="wl3-site-nav-link wl3-site-nav-link-minigolf" href="minigolf.html">The Dreaded Minigolf Game</a></li>
-                <li class="wl3-site-nav-list-item wl3-site-nav-list-item-downloads"><a class="wl3-site-nav-link wl3-site-nav-link-downloads" href="downloads.html">Downloads</a></li>
-            </ul>
-        </nav>
+        <header class="wl3-site-header"><h1 class="wl3-site-header-title"><a href="/">Wario Land 3</a></h1></header>
+        {% if header.navigation is not empty %}
+            <nav id="wl3-site-nav" class="wl3-site-nav">
+                <ul class="wl3-site-nav-list">
+                    {% for link in header.navigation %}
+                        <li class="wl3-site-nav-list-item wl3-site-nav-list-item-about"><a class="wl3-site-nav-link wl3-site-nav-link-about" href="{{ link.url }}">{{ link.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
         <form action="/search/", method="get">
             <input type="text" name="query">
             <input type="submit" value="¡Search!">

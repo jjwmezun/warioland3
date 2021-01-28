@@ -7,6 +7,10 @@ class Template
 {
     public function __construct( string $page, array $attributes = [] )
     {
+        $attributes[ 'header' ] =
+        [
+            'navigation' => HeaderNavigation::getList()
+        ];
         $this->content = self::$twig->render
         (
             "{$page}.html.twig",
