@@ -1,3 +1,8 @@
 {% extends "base.html.twig" %}
 
-{% block content %}Search for {{ query }}{% endblock %}
+{% block content %}
+    <h1>Search for “{{ query }}”</h1>
+    {% for page in pages %}
+        {{ page.content|raw }}
+    {% endfor %}
+{% endblock %}

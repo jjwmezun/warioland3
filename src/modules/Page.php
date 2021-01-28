@@ -5,15 +5,11 @@ namespace WarioLand3;
 
 class Page
 {
-    static public function getPageBySlug( string $slug ) : ?Page
-    {
-        $data = Connection::selectOne( 'page', 'page_slug', $slug );
-        if ( !empty( $data ) )
-        {
-            return new Page( $data[ 'page_title' ], $data[ 'page_content' ] );
-        }
-        throw new \Exception( 'Invalid page' );
-    }
+    public function __construct
+    (
+        private string $title,
+        private string $content
+    ) {}
 
     public function getTitle() : string
     {
@@ -24,10 +20,4 @@ class Page
     {
         return $this->content;
     }
-
-    public function __construct
-    (
-        private string $title,
-        private string $content
-    ) {}
 }

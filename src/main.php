@@ -40,11 +40,17 @@ if ( $path === 'home/' )
 $content = '';
 if ( in_array( $path, [ '', '/' ] ) )
 {
-    $content = ( new Template( 'page', [ 'page' => Page::getPageBySlug( 'home' ) ] ) )->getHtml();
+    $content = ( new Template( 'page', [ 'page' => PageFactory::getPageBySlug( 'home' ) ] ) )->getHtml();
 }
 else if ( $path === 'search/' )
 {
-    $content = ( new Template( 'search', [ 'query' => $request->query->get( 'query' ) ] ) )->getHtml();
+    $query = $request->query->get( 'query' );
+    $args =
+    [
+        'query' => $query,
+        'pages' => PageFactory::getPagesBySearchQuery( $query )
+    ];
+    $content = ( new Template( 'search', $args ) )->getHtml();
 }
 else
 {
