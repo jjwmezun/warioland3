@@ -11,10 +11,13 @@ class Template
         [
             'navigation' => HeaderNavigation::getList()
         ];
-        return self::$twig->render
+        return self::doShortcodes
         (
-            "{$page}.html.twig",
-            $attributes
+            self::$twig->render
+            (
+                "{$page}.html.twig",
+                $attributes
+            )
         );
     }
 
@@ -25,8 +28,52 @@ class Template
         (
             $loader
         );
+        self::$shortcodes =
+        [
+            'level' => function( array $args ) : string|bool
+            {
+                if ( empty( $args ) )
+                {
+                    return false;
+                }
+                $level = LevelFactory::getLevelByCode( $args[ 0 ] );
+                return ( $level ) ? '“' . $level->getFullName() . '”' : false;
+            }
+        ];
     }
 
-    private string $content;
+    private static function doShortcodes( string $text ) : string
+    {
+        $currentIndex = -1;
+        while ( $currentIndex = strpos( $text, '[', $currentIndex + 1 ) )
+        {
+            $start = $currentIndex;
+            $body = '';
+            $currentIndex++; // Skip opening bracket.
+            while ( $c = substr( $text, $currentIndex, 1 ) )
+            {
+                if ( $c === ']' )
+                {
+                    $endingFound = true;
+                    $args = explode( ' ', $body );
+                    if ( array_key_exists( $args[ 0 ], self::$shortcodes ) )
+                    {
+                        $replacement = self::$shortcodes[ $args[ 0 ] ]( array_slice( $args, 1 ) );
+                        if ( $replacement !== false )
+                        {
+                            $text = str_replace( '[' . $body . ']', $replacement, $text );
+                            $currentIndex = $start;
+                        }
+                    }
+                    break;
+                }
+                $body .= $c;
+                $currentIndex++;
+            }
+        }
+        return $text;
+    }
+
     private static ?\Twig\Environment $twig = null;
+    private static array $shortcodes;
 }
