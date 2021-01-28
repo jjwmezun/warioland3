@@ -45,10 +45,18 @@ if ( in_array( $path, [ '', '/' ] ) )
 else if ( $path === 'search/' )
 {
     $query = $request->query->get( 'query' );
+    $response = new RedirectResponse( "/search/$query/" );
+    $response->send();
+    /*
+    */
+}
+else if ( str_starts_with( $path, 'search/' ) )
+{
+    $query = urldecode( str_replace( '/', '', str_replace( 'search/', '', $path ) ) );
     $args =
     [
         'query' => $query,
-        'pages' => PageFactory::getPagesBySearchQuery( $query )
+        'pages' => PageFactory::getPagesBySearchQuery( strtolower( $query ) )
     ];
     $content = ( new Template( 'search', $args ) )->getHtml();
 }

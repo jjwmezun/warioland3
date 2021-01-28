@@ -24,7 +24,7 @@ class HeaderNavigation
                         {
                             throw new \Exception( "Missing page with slug: " . $item[ 'slug' ] );
                         }
-                        return new Link( $item[ 'slug' ] . '/', $item[ 'title' ] ?? $page->getTitle() );
+                        return new Link( '/' . $item[ 'slug' ] . '/', $item[ 'title' ] ?? $page->getTitle() );
                     }
                     throw new \Exception( "Header navigation has invalid item" );
                 },

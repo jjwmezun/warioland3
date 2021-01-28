@@ -17,6 +17,7 @@ class Connection
 
     static public function searchPagesForQuery( string $table, array $columns, string $query ) : array
     {
+        var_dump( $query );
         if ( empty( $columns ) )
         {
             throw new \Exception( "Error calling Connection::searchPagesForQuery with table $table & query $query: \$columns cannot be left empty" );

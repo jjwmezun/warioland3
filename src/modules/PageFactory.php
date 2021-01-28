@@ -8,11 +8,7 @@ class PageFactory
     static public function getPageBySlug( string $slug ) : ?Page
     {
         $data = Connection::selectOne( 'page', 'page_slug', $slug );
-        if ( !empty( $data ) )
-        {
-            return self::createPageFromData( $data );
-        }
-        throw new \Exception( 'Invalid page' );
+        return ( !empty( $data ) ) ? self::createPageFromData( $data ) : null;
     }
 
     static public function getPagesBySearchQuery( string $query ) : array
