@@ -7,30 +7,38 @@ class HeaderNavigation
 {
     public static function getList() : array
     {
-        return array_filter
+        return array_map
         (
-            array_map
-            (
-                function( array $item )
+            function( array $item )
+            {
+                if ( self::isRawLink( $item ) )
                 {
-                    if ( array_key_exists( 'url', $item ) && array_key_exists( 'title', $item ) )
+                    return new Link( '/' . $item[ 'url' ], $item[ 'title' ] );
+                }
+                else if ( self::isPageLink( $item ) )
+                {
+                    $page = PageFactory::getPageBySlug( $item[ 'slug' ] );
+                    if ( !$page )
                     {
-                        return new Link( '/' . $item[ 'url' ], $item[ 'title' ] );
+                        throw new \Exception( "Missing page with slug: " . $item[ 'slug' ] );
                     }
-                    else if ( array_key_exists( 'slug', $item ) )
-                    {
-                        $page = PageFactory::getPageBySlug( $item[ 'slug' ] );
-                        if ( !$page )
-                        {
-                            throw new \Exception( "Missing page with slug: " . $item[ 'slug' ] );
-                        }
-                        return new Link( '/' . $item[ 'slug' ] . '/', $item[ 'title' ] ?? $page->getTitle() );
-                    }
-                    throw new \Exception( "Header navigation has invalid item" );
-                },
-                self::DATA
-            )
+                    $title = $item[ 'title' ] ?? $page->getTitle(); // O’erride title if manually set.
+                    return new Link( '/' . $item[ 'slug' ] . '/', $title );
+                }
+                throw new \Exception( "Header navigation has invalid item" );
+            },
+            self::DATA
         );
+    }
+
+    private static function isRawLink( array $item ) : bool
+    {
+        return array_key_exists( 'url', $item ) && array_key_exists( 'title', $item );
+    }
+
+    private static function isPageLink( array $item ) : bool
+    {
+        return array_key_exists( 'slug', $item );
     }
 
     private const DATA =

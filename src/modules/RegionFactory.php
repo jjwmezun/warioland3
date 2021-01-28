@@ -5,7 +5,7 @@ namespace WarioLand3;
 
 class RegionFactory
 {
-    public static function getList() : array
+    public static function getAllRegions() : array
     {
         return array_map( [ self::class, 'getRegionFromData' ], Connection::selectAllOrderedBy( "region", [ "region_order" ] ) );
     }

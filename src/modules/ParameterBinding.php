@@ -25,15 +25,20 @@ class ParameterBinding
         $statement->bindParam( $this->name, $this->value, $this->type );
     }
 
+
+
+    //
+    //  PRIVATE
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     private static function generateType( string $type ) : int
     {
-        switch ( $type )
+        if ( !array_key_exists( $type, self::TYPES ) )
         {
-            case ( "string" ) : return \PDO::PARAM_STR;
-            case ( "int" ) : return \PDO::PARAM_INT;
-            case ( "integer" ) : return \PDO::PARAM_INT;
+            throw new \Exception( "Invalid type for parameter binding: $type" );
         }
-        throw new \Exception( "Invalid type for parameter binding: $type" );
+        return self::TYPES[ $type ];
     }
 
     private function __construct
@@ -42,4 +47,11 @@ class ParameterBinding
         private $value,
         private int $type
     ) {}
+
+    private const TYPES =
+    [
+        "string" => \PDO::PARAM_STR,
+        "int" => \PDO::PARAM_INT,
+        "integer" => \PDO::PARAM_INT
+    ];
 }

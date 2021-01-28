@@ -38,27 +38,21 @@ if ( $path === 'home/' )
 }
 
 $content = '';
-if ( in_array( $path, [ '', '/' ] ) )
+if ( in_array( $path, [ '', '/' ] ) ) // Make root URL go to home page.
 {
-    $content = ( new Template( 'page', [ 'page' => PageFactory::getPageBySlug( 'home' ) ] ) )->getHtml();
+    $content = Template::generate( 'page', [ 'page' => PageFactory::getPageBySlug( 'home' ) ] );
 }
-/*
-else if ( $path === 'reset/levels/' )
+else if ( $path === 'levels/' ) // Go to hard-coded levels page.
 {
-    LevelFactory::resetLevelTable();
+    $content = Template::generate( 'levels-archive', [ 'regions' => RegionFactory::getAllRegions() ] );
 }
-*/
-else if ( $path === 'levels/' )
-{
-    $content = ( new Template( 'levels-archive', [ 'regions' => new RegionFactory() ] ) )->getHtml();
-}
-else if ( $path === 'search/' )
+else if ( $path === 'search/' ) // Redirect search page with GET query to cleaner URL.
 {
     $query = $request->query->get( 'query' );
     $response = new RedirectResponse( "/search/$query/" );
     $response->send();
 }
-else if ( str_starts_with( $path, 'search/' ) )
+else if ( str_starts_with( $path, 'search/' ) ) // Handle search page.
 {
     $query = urldecode( str_replace( '/', '', str_replace( 'search/', '', $path ) ) );
     $args =
@@ -66,22 +60,19 @@ else if ( str_starts_with( $path, 'search/' ) )
         'query' => $query,
         'pages' => PageFactory::getPagesBySearchQuery( strtolower( $query ) )
     ];
-    $content = ( new Template( 'search', $args ) )->getHtml();
+    $content = Template::generate( 'search', $args );
+}
+else if ( str_starts_with( $path, 'level/' ) ) // Handle individual level page.
+{    
+    $slug = str_replace( '/', '', str_replace( 'level/', '', $path ) );
+    $level = LevelFactory::getLevelBySlug( $slug );
+    $content = ( $level ) ? Template::generate( 'level', [ 'level' => $level ] ) : Template::generate( '404' );
 }
 else
 {
-    if ( str_starts_with( $path, 'level/' ) )
-    {
-        $slug = str_replace( '/', '', str_replace( 'level/', '', $path ) );
-        $level = LevelFactory::getLevelBySlug( $slug );
-        $content = ( ( $level ) ? new Template( 'level', [ 'level' => $level ] ) : new Template( '404' ) )->getHtml();
-    }
-    else
-    {
-        $slug = str_replace( '/', '', $path );
-        $page = PageFactory::getPageBySlug( $slug );
-        $content = ( ( $page ) ? new Template( 'page', [ 'page' => $page ] ) : new Template( '404' ) )->getHtml();
-    }
+    $slug = str_replace( '/', '', $path );
+    $page = PageFactory::getPageBySlug( $slug );
+    $content = ( $page ) ? Template::generate( 'page', [ 'page' => $page ] ) : Template::generate( '404' );
 }
 
 $response = new Response( $content );

@@ -13,9 +13,11 @@ class PageFactory
 
     static public function getPagesBySearchQuery( string $query ) : array
     {
-        $pages = [];
-        $data = Connection::searchPagesForQuery( 'page', [ 'page_title', 'page_content' ], $query );
-        return array_map( fn( array $item ) => self::createPageFromData( $item ), $data );
+        return array_map
+        (
+            fn( array $item ) => self::createPageFromData( $item ),
+            $data = Connection::searchPagesForQuery( 'page', [ 'page_title', 'page_content' ], $query )
+        );
     }
 
     static private function createPageFromData( array $data ) : Page

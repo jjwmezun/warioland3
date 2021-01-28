@@ -13,33 +13,12 @@ class LevelFactory
 
     public static function getLevelsByRegion( Region $region ) : array
     {
-        return array_map( fn( array $item ) => self::getLevelFromData( $item, $region ), Connection::selectAllWhere( "level", "level_region_id", $region->getId(), "int" ) );
+        return array_map
+        (
+            fn( array $data ) => new Level( $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region ),
+            Connection::selectAllWhere( "level", "level_region_id", $region->getId(), "int" )
+        );
     }
-
-    private static function getLevelFromData( array $data, Region $region ) : Level
-    {
-        return new Level( $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region );
-    }
-
-    /*
-    public static function resetLevelTable() : void
-    {
-        Connection::clearTable( "level" );
-        foreach ( self::LEVELS as $level )
-        {
-            $region = RegionFactory::getRegionByCode( $level[ 'region' ] );
-            $data =
-            [
-                'level_name' => $level[ 'name' ],
-                'level_region_id' => $region->getId(),
-                'level_order' => $level[ 'order' ],
-                'level_slug' => Utilities::slugify( $region->getCode() . $level[ 'order' ] . '-' . $level[ 'name' ] )
-            ];
-            Connection::insertToTable( "level", $data );
-        }
-        echo( 'Levels reset.' );
-    }
-    */
 
     private const LEVELS =
     [

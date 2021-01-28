@@ -5,24 +5,6 @@ namespace WarioLand3;
 
 class Connection
 {
-    /*
-    static public function insertToTable( string $table, array $data ) : void
-    {
-        $bindings = [];
-        $values = array_values( $data );
-        for ( $i = 0; $i < count( $values ); ++$i )
-        {
-            $bindings[] = ParameterBinding::createBindingOfType( gettype( $values[ $i ] ), $i + 1, $values[ $i ] );
-        }
-        var_dump( self::fetchAll( "insert into $table (" . implode( ",", array_keys( $data ) ) . ") values (" . implode( ",", array_map( fn() => "?", array_values( $data ) ) ) . ")", $bindings ) );
-    }
-
-    static public function clearTable( string $table ) : void
-    {
-        var_dump( self::fetchAll( "delete from $table" ) );
-    }
-    */
-
     static public function selectAll( string $table ) : array
     {
         return self::fetchAll( "select * from $table" );
@@ -69,6 +51,20 @@ class Connection
         );
     }
 
+    static public function init() : void
+    {
+        $credentials = self::getCredentials();
+        self::$pdo = new \PDO( 'pgsql:host=' . $credentials[ 'host' ] . ';dbname=' . $credentials[ 'dbname' ], $credentials[ 'user' ], $credentials[ 'password' ] );
+    }
+
+
+
+    
+    //
+    //  PRIVATE
+    //
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
     static private function fetchAll( string $prepare, array $bindings = [] ) : array
     {
         $statement = self::$pdo->prepare( $prepare );
@@ -78,12 +74,6 @@ class Connection
         }
         $statement->execute();
         return $statement->fetchAll();
-    }
-
-    static public function init() : void
-    {
-        $credentials = self::getCredentials();
-        self::$pdo = new \PDO( 'pgsql:host=' . $credentials[ 'host' ] . ';dbname=' . $credentials[ 'dbname' ], $credentials[ 'user' ], $credentials[ 'password' ] );
     }
 
     static private function getCredentials() : array
