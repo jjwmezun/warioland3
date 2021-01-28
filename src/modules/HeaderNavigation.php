@@ -15,7 +15,7 @@ class HeaderNavigation
                 {
                     if ( array_key_exists( 'url', $item ) && array_key_exists( 'title', $item ) )
                     {
-                        return new Link( $item[ 'url' ], $item[ 'title' ] );
+                        return new Link( '/' . $item[ 'url' ], $item[ 'title' ] );
                     }
                     else if ( array_key_exists( 'slug', $item ) )
                     {
@@ -35,7 +35,8 @@ class HeaderNavigation
 
     private const DATA =
     [
-        [ 'url' => '/', 'title' => 'About' ],
+        [ 'url' => '', 'title' => 'About' ],
+        [ 'url' => 'levels', 'title' => 'Levels' ],
         [ 'slug' => 'minigolf' ]
     ];
 }

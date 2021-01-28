@@ -1,0 +1,15 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <h1>Levels</h1>
+    {% for region in regions.list %}
+        <section>
+            <h3>{{ region.name }}</h3>
+            <ul>
+                {% for level in region.levels %}
+                    <li><a href="/level/{{ level.slug }}/">{{ region.code }}{{ level.number }} – {{ level.name }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endfor %}
+{% endblock %}

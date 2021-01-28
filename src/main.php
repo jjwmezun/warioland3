@@ -42,13 +42,21 @@ if ( in_array( $path, [ '', '/' ] ) )
 {
     $content = ( new Template( 'page', [ 'page' => PageFactory::getPageBySlug( 'home' ) ] ) )->getHtml();
 }
+/*
+else if ( $path === 'reset/levels/' )
+{
+    LevelFactory::resetLevelTable();
+}
+*/
+else if ( $path === 'levels/' )
+{
+    $content = ( new Template( 'levels-archive', [ 'regions' => new RegionFactory() ] ) )->getHtml();
+}
 else if ( $path === 'search/' )
 {
     $query = $request->query->get( 'query' );
     $response = new RedirectResponse( "/search/$query/" );
     $response->send();
-    /*
-    */
 }
 else if ( str_starts_with( $path, 'search/' ) )
 {
@@ -62,9 +70,18 @@ else if ( str_starts_with( $path, 'search/' ) )
 }
 else
 {
-    $slug = str_replace( '/', '', $path );
-    $page = PageFactory::getPageBySlug( $slug );
-    $content = ( ( $page ) ? new Template( 'page', [ 'page' => $page ] ) : new Template( '404' ) )->getHtml();
+    if ( str_starts_with( $path, 'level/' ) )
+    {
+        $slug = str_replace( '/', '', str_replace( 'level/', '', $path ) );
+        $level = LevelFactory::getLevelBySlug( $slug );
+        $content = ( ( $level ) ? new Template( 'level', [ 'level' => $level ] ) : new Template( '404' ) )->getHtml();
+    }
+    else
+    {
+        $slug = str_replace( '/', '', $path );
+        $page = PageFactory::getPageBySlug( $slug );
+        $content = ( ( $page ) ? new Template( 'page', [ 'page' => $page ] ) : new Template( '404' ) )->getHtml();
+    }
 }
 
 $response = new Response( $content );

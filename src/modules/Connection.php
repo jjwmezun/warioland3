@@ -5,22 +5,62 @@ namespace WarioLand3;
 
 class Connection
 {
-    static public function selectOne( string $table, string $condition_type, string $condition_value ) : array
+    /*
+    static public function insertToTable( string $table, array $data ) : void
+    {
+        $bindings = [];
+        $values = array_values( $data );
+        for ( $i = 0; $i < count( $values ); ++$i )
+        {
+            $bindings[] = ParameterBinding::createBindingOfType( gettype( $values[ $i ] ), $i + 1, $values[ $i ] );
+        }
+        var_dump( self::fetchAll( "insert into $table (" . implode( ",", array_keys( $data ) ) . ") values (" . implode( ",", array_map( fn() => "?", array_values( $data ) ) ) . ")", $bindings ) );
+    }
+
+    static public function clearTable( string $table ) : void
+    {
+        var_dump( self::fetchAll( "delete from $table" ) );
+    }
+    */
+
+    static public function selectAll( string $table ) : array
+    {
+        return self::fetchAll( "select * from $table" );
+    }
+
+    static public function selectAllWhere( string $table, string $condition_name, $condition_value, $condition_type = "string" ) : array
+    {
+        return self::fetchAll
+        (
+            "select * from $table where $condition_name = :value",
+            [ ParameterBinding::createBindingOfType( $condition_type, ':value', $condition_value ) ]
+        );
+    }
+
+    static public function selectAllOrderedBy( string $table, array $order ) : array
+    {
+        if ( empty( $order ) )
+        {
+            throw new \Exception( "Error calling Connection::selectAllOrderedBy with table $table \$order can’t be left empty" );
+        }
+        return self::fetchAll( "select * from $table order by " . implode( ", ", $order ) );
+    }
+
+    static public function selectOne( string $table, string $condition_name, $condition_value, $condition_type = "string" ) : array
     {
         $rows = self::fetchAll
         (
-            "select distinct * from $table where $condition_type = :value",
-            [ ParameterBinding::createStringBinding( ':value', $condition_value ) ]
+            "select distinct * from $table where $condition_name = :value",
+            [ ParameterBinding::createBindingOfType( $condition_type, ':value', $condition_value ) ]
         );
         return ( count( $rows ) === 0 ) ? [] : $rows[ 0 ];
     }
 
     static public function searchPagesForQuery( string $table, array $columns, string $query ) : array
     {
-        var_dump( $query );
         if ( empty( $columns ) )
         {
-            throw new \Exception( "Error calling Connection::searchPagesForQuery with table $table & query $query: \$columns cannot be left empty" );
+            throw new \Exception( "Error calling Connection::searchPagesForQuery with table $table & query $query: \$columns can’t be left empty" );
         }
         return self::fetchAll
         (
@@ -29,7 +69,7 @@ class Connection
         );
     }
 
-    static private function fetchAll( string $prepare, array $bindings ) : array
+    static private function fetchAll( string $prepare, array $bindings = [] ) : array
     {
         $statement = self::$pdo->prepare( $prepare );
         foreach ( $bindings as $binding )
