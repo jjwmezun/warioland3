@@ -5,8 +5,7 @@ namespace WarioLand3;
 
 class Connection
 {
-    /*
-    static public function insertToTable( string $table, array $data ) : void
+    static public function insertToTable( string $table, array $data ) : string
     {
         $bindings = [];
         $values = array_values( $data );
@@ -14,13 +13,14 @@ class Connection
         {
             $bindings[] = ParameterBinding::createBindingOfType( gettype( $values[ $i ] ), $i + 1, $values[ $i ] );
         }
-        var_dump( self::fetchAll( "insert into $table (" . implode( ",", array_keys( $data ) ) . ") values (" . implode( ",", array_map( fn() => "?", array_values( $data ) ) ) . ")", $bindings ) );
+        self::fetchAll( "insert into $table (" . implode( ",", array_keys( $data ) ) . ") values (" . implode( ",", array_map( fn() => "?", array_values( $data ) ) ) . ")", $bindings );
+        return self::$pdo->lastInsertId();
     }
 
     static public function clearTable( string $table ) : void
     {
         var_dump( self::fetchAll( "delete from $table" ) );
-    }*/
+    }
 
 
     static public function selectAll( string $table ) : array

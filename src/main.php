@@ -47,6 +47,10 @@ else if ( $path === 'reset/treasures/' )
 {
     return TreasureFactory::resetTreasureTable();
 }*/
+else if ( $path === 'reset/enemies/' )
+{
+    return EnemyFactory::resetEnemyTable();
+}
 else if ( $path === 'levels/' ) // Go to hard-coded levels page.
 {
     $content = Template::generate( 'levels-archive', [ 'regions' => RegionFactory::getAllRegions() ] );
@@ -54,6 +58,10 @@ else if ( $path === 'levels/' ) // Go to hard-coded levels page.
 else if ( $path === 'treasures/' ) // Go to hard-coded treasures page.
 {
     $content = Template::generate( 'treasures', [ 'treasures' => TreasureFactory::getAllTreasures() ] );
+}
+else if ( $path === 'enemies/' ) // Go to hard-coded enemies page.
+{
+    $content = Template::generate( 'enemies', [ 'enemies' => EnemyFactory::getAllEnemies() ] );
 }
 else if ( $path === 'search/' ) // Redirect search page with GET query to cleaner URL.
 {

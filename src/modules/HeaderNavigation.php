@@ -44,6 +44,7 @@ class HeaderNavigation
     private const DATA =
     [
         [ 'url' => '', 'title' => 'About' ],
+        [ 'url' => 'enemies', 'title' => 'Enemies' ],
         [ 'url' => 'levels', 'title' => 'Levels' ],
         [ 'url' => 'treasures', 'title' => 'Treasures' ],
         [ 'slug' => 'minigolf' ]

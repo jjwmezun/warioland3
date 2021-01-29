@@ -39,6 +39,11 @@ class Level
         return $this->number;
     }
 
+    public function getOrder() : int
+    {
+        return ( $this->getRegion()->getOrder() - 1 ) * 6 + $this->number;
+    }
+
     public function getRegion() : Region
     {
         if ( gettype( $this->region ) === 'integer' )

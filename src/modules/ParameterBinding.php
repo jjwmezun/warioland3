@@ -57,6 +57,8 @@ class ParameterBinding
     [
         "string" => \PDO::PARAM_STR,
         "int" => \PDO::PARAM_INT,
-        "integer" => \PDO::PARAM_INT
+        "integer" => \PDO::PARAM_INT,
+        "bool" => \PDO::PARAM_BOOL,
+        "boolean" => \PDO::PARAM_BOOL,
     ];
 }

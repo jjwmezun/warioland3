@@ -9,7 +9,8 @@ class Region
     (
         private int $id,
         private string $name,
-        private string $code
+        private string $code,
+        private int $order
     ) {}
 
     public function getId() : int
@@ -25,6 +26,11 @@ class Region
     public function getCode() : string
     {
         return $this->code;
+    }
+
+    public function getOrder() : int
+    {
+        return $this->order;
     }
 
     public function getLevels() : array
