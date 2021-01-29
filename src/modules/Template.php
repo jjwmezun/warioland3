@@ -11,6 +11,7 @@ class Template
         [
             'navigation' => HeaderNavigation::getList()
         ];
+        $attributes[ 'path' ] = new PathFactory();
         return self::doShortcodes
         (
             self::$twig->render
@@ -38,6 +39,21 @@ class Template
                 }
                 $level = LevelFactory::getLevelByCode( $args[ 0 ] );
                 return ( $level ) ? '<a href="' . PathFactory::getLevelPath( $level ) . '">“' . $level->getFullName() . '”</a>' : false;
+            },
+            'enemy' => function( array $args ) : string|bool
+            {
+                $count = count( $args );
+                $plural = false;
+                if ( $count !== 1 && $count !== 2 )
+                {
+                    return false;
+                }
+                if ( $count === 2 )
+                {
+                    $plural = boolval( $args[ 1 ] );
+                }
+                $enemy = EnemyFactory::getEnemyBySlug( $args[ 0 ] );
+                return ( $enemy ) ? '<a href="' . PathFactory::getEnemyPath( $enemy ) . '">' . ( ( $plural ) ? $enemy->getPluralName() : $enemy->getName() ) . '</a>' : false;
             }
         ];
     }

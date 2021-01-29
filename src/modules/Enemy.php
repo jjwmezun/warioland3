@@ -32,6 +32,11 @@ class Enemy
         return $this->name;
     }
 
+    public function getPluralName() : string
+    {
+        return $this->name . 's';
+    }
+
     public function getSlug() : string
     {
         return $this->slug;

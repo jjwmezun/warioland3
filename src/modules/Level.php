@@ -11,6 +11,7 @@ class Level
         private string $name,
         private string $slug,
         private int $number,
+        private ?string $description,
         private Region|int $region
     ) {}
 
@@ -42,6 +43,11 @@ class Level
     public function getOrder() : int
     {
         return ( $this->getRegion()->getOrder() - 1 ) * 6 + $this->number;
+    }
+
+    public function getDescription() : ?string
+    {
+        return $this->description;
     }
 
     public function getRegion() : Region

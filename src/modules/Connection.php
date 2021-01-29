@@ -33,6 +33,23 @@ class Connection
         return self::selectWhere( $table, $conditions, false, "selectAllWhere" );
     }
 
+    static public function selectAllWhereOrderedBy( string $table, array $conditions, array $order ) : array
+    {
+        if ( empty( $order ) )
+        {
+            throw new \Exception( "Error calling Connection::selectAllWhereOrderedBy with table $table \$order can’t be left empty" );
+        }
+        if ( empty( $conditions ) )
+        {
+            throw new \Exception( "Error calling Connection::selectAllWhereOrderedBy with table $table \$conditions can’t be left empty" );
+        }
+        return self::fetchAll
+        (
+            "select * from $table where " . implode( " and ", array_map( fn( ParameterBinding $condition ) => $condition->getName() . " = :" . $condition->getName(), $conditions ) ) . ' order by ' . implode( ", ", $order ),
+            $conditions
+        );
+    }
+
     static public function selectAllOrderedBy( string $table, array $order ) : array
     {
         if ( empty( $order ) )

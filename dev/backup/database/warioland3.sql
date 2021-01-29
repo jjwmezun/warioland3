@@ -16,9 +16,100 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: grabability; Type: TYPE; Schema: public; Owner: warioland3
+--
+
+CREATE TYPE public.grabability AS ENUM (
+    'none',
+    'small',
+    'big'
+);
+
+
+ALTER TYPE public.grabability OWNER TO warioland3;
+
+--
+-- Name: respawn; Type: TYPE; Schema: public; Owner: warioland3
+--
+
+CREATE TYPE public.respawn AS ENUM (
+    'n/a',
+    'none',
+    'change room',
+    'off-screen'
+);
+
+
+ALTER TYPE public.respawn OWNER TO warioland3;
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: enemy; Type: TABLE; Schema: public; Owner: warioland3
+--
+
+CREATE TABLE public.enemy (
+    enemy_id integer NOT NULL,
+    enemy_name character varying(255) NOT NULL,
+    enemy_name_jp character varying(255),
+    enemy_name_jp_romaji character varying(255),
+    enemy_name_jp_translation character varying(255),
+    enemy_what_it_is text,
+    enemy_what_it_does text,
+    enemy_what_you_can_do text,
+    enemy_grabability public.grabability NOT NULL,
+    enemy_respawn public.respawn NOT NULL,
+    enemy_sleeps_at_night boolean,
+    enemy_order integer NOT NULL,
+    enemy_slug character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.enemy OWNER TO warioland3;
+
+--
+-- Name: enemy_enemy_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE public.enemy ALTER COLUMN enemy_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.enemy_enemy_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- Name: enemy_level; Type: TABLE; Schema: public; Owner: warioland3
+--
+
+CREATE TABLE public.enemy_level (
+    enemy_level_id integer NOT NULL,
+    enemy_level_enemy_id integer NOT NULL,
+    enemy_level_level_id integer NOT NULL
+);
+
+
+ALTER TABLE public.enemy_level OWNER TO warioland3;
+
+--
+-- Name: enemy_level_enemy_level_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE public.enemy_level ALTER COLUMN enemy_level_id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.enemy_level_enemy_level_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
 
 --
 -- Name: level; Type: TABLE; Schema: public; Owner: warioland3
@@ -29,7 +120,8 @@ CREATE TABLE public.level (
     level_name character varying NOT NULL,
     level_region_id integer NOT NULL,
     level_order integer NOT NULL,
-    level_slug character varying(255)
+    level_slug character varying(255),
+    level_description text
 );
 
 
@@ -180,35 +272,72 @@ ALTER TABLE public.treasure ALTER COLUMN treasure_id ADD GENERATED ALWAYS AS IDE
 
 
 --
+-- Data for Name: enemy; Type: TABLE DATA; Schema: public; Owner: warioland3
+--
+
+COPY public.enemy (enemy_id, enemy_name, enemy_name_jp, enemy_name_jp_romaji, enemy_name_jp_translation, enemy_what_it_is, enemy_what_it_does, enemy_what_you_can_do, enemy_grabability, enemy_respawn, enemy_sleeps_at_night, enemy_order, enemy_slug) FROM stdin;
+12	Spearhead	ヤリマル	Yarimaru	Spear Circle	<p>The most common & basic enemy.</p><p>Baby blue sphere with a spade-shaped spear protruding from its face like a nose & inverted black & white eyes connected o’er the bridge.</p>			small	change room	t	1	spearhead
+\.
+
+
+--
+-- Data for Name: enemy_level; Type: TABLE DATA; Schema: public; Owner: warioland3
+--
+
+COPY public.enemy_level (enemy_level_id, enemy_level_enemy_id, enemy_level_level_id) FROM stdin;
+21	12	11
+22	12	12
+23	12	13
+24	12	14
+25	12	16
+26	12	17
+27	12	18
+28	12	19
+29	12	20
+30	12	21
+31	12	22
+32	12	23
+33	12	24
+34	12	25
+35	12	26
+36	12	27
+37	12	29
+38	12	30
+39	12	31
+40	12	32
+\.
+
+
+--
 -- Data for Name: level; Type: TABLE DATA; Schema: public; Owner: warioland3
 --
 
-COPY public.level (level_id, level_name, level_region_id, level_order, level_slug) FROM stdin;
-11	Out of the Woods	1	1	n1-out-of-the-woods
-12	The Peaceful Village	1	2	n2-the-peaceful-village
-13	The Vast Plain	1	3	n3-the-vast-plain
-14	Bank of the Wild River	1	4	n4-bank-of-the-wild-river
-15	The Tidal Coast	1	5	n5-the-tidal-coast
-16	Sea Turtle Rock	1	6	n6-sea-turtle-rock
-17	Desert Ruins	2	1	w1-desert-ruins
-18	The Volcano’s Base	2	2	w2-the-volcanos-base
-19	The Pool of Rain	2	3	w3-the-pool-of-rain
-20	A Town in Chaos	2	4	w4-a-town-in-chaos
-21	Beneath the Waves	2	5	w5-beneath-the-waves
-22	The West Crater	2	6	w6-the-west-crater
-23	The Grasslands	3	1	s1-the-grasslands
-24	The Big Bridge	3	2	s2-the-big-bridge
-25	Tower of Revival	3	3	s3-tower-of-revival
-26	The Steep Canyon	3	4	s4-the-steep-canyon
-27	Cave of Flames	3	5	s5-cave-of-flames
-28	Above the Clouds	3	6	s6-above-the-clouds
-29	The Stagnant Swamp	4	1	e1-the-stagnant-swamp
-30	The Frigid Sea	4	2	e2-the-frigid-sea
-31	Castle of Illusion	4	3	e3-castle-of-illusion
-32	The Colossal Hole	4	4	e4-the-colossal-hole
-33	The Warped Void	4	5	e5-the-warped-void
-34	The East Crater	4	6	e6-the-east-crater
-35	Forest of Fear	4	7	e7-forest-of-fear
+COPY public.level (level_id, level_name, level_region_id, level_order, level_slug, level_description) FROM stdin;
+12	The Peaceful Village	1	2	n2-the-peaceful-village	\N
+13	The Vast Plain	1	3	n3-the-vast-plain	\N
+14	Bank of the Wild River	1	4	n4-bank-of-the-wild-river	\N
+15	The Tidal Coast	1	5	n5-the-tidal-coast	\N
+16	Sea Turtle Rock	1	6	n6-sea-turtle-rock	\N
+17	Desert Ruins	2	1	w1-desert-ruins	\N
+18	The Volcano’s Base	2	2	w2-the-volcanos-base	\N
+19	The Pool of Rain	2	3	w3-the-pool-of-rain	\N
+20	A Town in Chaos	2	4	w4-a-town-in-chaos	\N
+21	Beneath the Waves	2	5	w5-beneath-the-waves	\N
+22	The West Crater	2	6	w6-the-west-crater	\N
+23	The Grasslands	3	1	s1-the-grasslands	\N
+24	The Big Bridge	3	2	s2-the-big-bridge	\N
+25	Tower of Revival	3	3	s3-tower-of-revival	\N
+26	The Steep Canyon	3	4	s4-the-steep-canyon	\N
+27	Cave of Flames	3	5	s5-cave-of-flames	\N
+28	Above the Clouds	3	6	s6-above-the-clouds	\N
+29	The Stagnant Swamp	4	1	e1-the-stagnant-swamp	\N
+30	The Frigid Sea	4	2	e2-the-frigid-sea	\N
+31	Castle of Illusion	4	3	e3-castle-of-illusion	\N
+32	The Colossal Hole	4	4	e4-the-colossal-hole	\N
+33	The Warped Void	4	5	e5-the-warped-void	\N
+34	The East Crater	4	6	e6-the-east-crater	\N
+35	Forest of Fear	4	7	e7-forest-of-fear	\N
+11	Out of the Woods	1	1	n1-out-of-the-woods	<p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearhead true] & [enemy webber true], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p>
 \.
 
 
@@ -264,6 +393,20 @@ COPY public.treasure_color (treasure_color_id, treasure_color_name, treasure_col
 
 
 --
+-- Name: enemy_enemy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
+--
+
+SELECT pg_catalog.setval('public.enemy_enemy_id_seq', 12, true);
+
+
+--
+-- Name: enemy_level_enemy_level_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
+--
+
+SELECT pg_catalog.setval('public.enemy_level_enemy_level_id_seq', 40, true);
+
+
+--
 -- Name: level_level_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
 --
 
@@ -296,6 +439,46 @@ SELECT pg_catalog.setval('public.treasure_color_treasure_color_id_seq', 4, true)
 --
 
 SELECT pg_catalog.setval('public.treasure_treasure_id_seq', 1, true);
+
+
+--
+-- Name: enemy enemy_enemy_name_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy
+    ADD CONSTRAINT enemy_enemy_name_key UNIQUE (enemy_name);
+
+
+--
+-- Name: enemy enemy_enemy_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy
+    ADD CONSTRAINT enemy_enemy_order_key UNIQUE (enemy_order);
+
+
+--
+-- Name: enemy enemy_enemy_slug_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy
+    ADD CONSTRAINT enemy_enemy_slug_key UNIQUE (enemy_slug);
+
+
+--
+-- Name: enemy_level enemy_level_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy_level
+    ADD CONSTRAINT enemy_level_pkey PRIMARY KEY (enemy_level_id);
+
+
+--
+-- Name: enemy enemy_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy
+    ADD CONSTRAINT enemy_pkey PRIMARY KEY (enemy_id);
 
 
 --
@@ -407,6 +590,22 @@ ALTER TABLE ONLY public.treasure
 --
 
 CREATE INDEX password_resets_email_index ON public.password_resets USING btree (email);
+
+
+--
+-- Name: enemy_level enemy_level_enemy_level_enemy_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy_level
+    ADD CONSTRAINT enemy_level_enemy_level_enemy_id_fkey FOREIGN KEY (enemy_level_enemy_id) REFERENCES public.enemy(enemy_id);
+
+
+--
+-- Name: enemy_level enemy_level_enemy_level_level_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
+--
+
+ALTER TABLE ONLY public.enemy_level
+    ADD CONSTRAINT enemy_level_enemy_level_level_id_fkey FOREIGN KEY (enemy_level_level_id) REFERENCES public.level(level_id);
 
 
 --

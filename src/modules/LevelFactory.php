@@ -8,13 +8,13 @@ class LevelFactory
     public static function getLevelBySlug( string $slug ) : ?Level
     {
         $data = Connection::selectOne( 'level', [ ParameterBinding::createStringBinding( 'level_slug', $slug ) ] );
-        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ 'level_region_id' ] ) : null;
+        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ "level_description" ], $data[ 'level_region_id' ] ) : null;
     }
 
     public static function getLevelById( int $id ) : ?Level
     {
         $data = Connection::selectOne( 'level', [ ParameterBinding::createIntBinding( 'level_id', $id ) ] );
-        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ 'level_region_id' ] ) : null;
+        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ "level_description" ], $data[ 'level_region_id' ] ) : null;
     }
 
     public static function getLevelByCode( string $code ) : ?Level
@@ -30,21 +30,21 @@ class LevelFactory
                 ParameterBinding::createIntBinding( 'level_order', $numberCode )
             ]
         );
-        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region ) : null;
+        return ( !empty( $data ) ) ? new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ "level_description" ], $region ) : null;
     }
 
     public static function getLevelsByRegion( Region $region ) : array
     {
         return array_map
         (
-            fn( array $data ) => new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $region ),
-            Connection::selectAllWhere( "level", [ ParameterBinding::createIntBinding( "level_region_id", $region->getId() ) ] )
+            fn( array $data ) => new Level( $data[ "level_id" ], $data[ "level_name" ], $data[ "level_slug" ], $data[ "level_order" ], $data[ "level_description" ], $region ),
+            Connection::selectAllWhereOrderedBy( "level", [ ParameterBinding::createIntBinding( "level_region_id", $region->getId() ) ], [ 'level_order' ] )
         );
     }
 
     private const LEVELS =
     [
-        [ 'region' => 'N', 'order' => 1, 'name' => 'Out of the Woods' ],
+        [ 'region' => 'N', 'order' => 1, 'name' => 'Out of the Woods', 'desc' => '<p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearheads] & [enemy webbers], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p>' ],
         [ 'region' => 'N', 'order' => 2, 'name' => 'The Peaceful Village' ],
         [ 'region' => 'N', 'order' => 3, 'name' => 'The Vast Plain' ],
         [ 'region' => 'N', 'order' => 4, 'name' => 'Bank of the Wild River' ],

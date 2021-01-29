@@ -1,5 +1,8 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <h1>{{ level.fullName }}</h1>
+    <header class="lv-header lv-{{ level.code }}">
+        <h3 class="lv-header-title lv-header-title-{{ level.code }}" title="{{ level.fullName }}">{{ level.fullName }}</h3>
+        {% include( "partials/level-header-content.html.twig" ) %}
+    </header>
 {% endblock %}

@@ -14,6 +14,12 @@ class EnemyFactory
         );
     }
 
+    public static function getEnemyBySlug( string $slug ) : ?Enemy
+    {
+        $data = Connection::selectOne( 'enemy', [ ParameterBinding::createStringBinding( 'enemy_slug', $slug ) ] );
+        return ( !empty( $data ) ) ? self::getEnemyFromData( $data ) : null;
+    }
+
     public static function resetEnemyTable() : void
     {
         Connection::clearTable( 'enemy_level' );
