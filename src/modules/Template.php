@@ -32,12 +32,12 @@ class Template
         [
             'level' => function( array $args ) : string|bool
             {
-                if ( empty( $args ) )
+                if ( count( $args ) !== 1 )
                 {
                     return false;
                 }
                 $level = LevelFactory::getLevelByCode( $args[ 0 ] );
-                return ( $level ) ? '“' . $level->getFullName() . '”' : false;
+                return ( $level ) ? '<a href="' . PathFactory::getLevelPath( $level ) . '">“' . $level->getFullName() . '”</a>' : false;
             }
         ];
     }
