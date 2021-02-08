@@ -42,27 +42,6 @@ if ( in_array( $path, [ '', '/' ] ) ) // Make root URL go to home page.
 {
     $content = Template::generate( 'page', [ 'page' => PageFactory::getPageBySlug( 'home' ) ] );
 }
-/*
-else if ( $path === 'reset/treasures/' )
-{
-    return TreasureFactory::resetTreasureTable();
-}*/
-else if ( $path === 'reset/enemies/' )
-{
-    return EnemyFactory::resetEnemyTable();
-}
-else if ( $path === 'levels/' ) // Go to hard-coded levels page.
-{
-    $content = Template::generate( 'levels-archive', [ 'regions' => RegionFactory::getAllRegions() ] );
-}
-else if ( $path === 'treasures/' ) // Go to hard-coded treasures page.
-{
-    $content = Template::generate( 'treasures', [ 'treasures' => TreasureFactory::getAllTreasures() ] );
-}
-else if ( $path === 'enemies/' ) // Go to hard-coded enemies page.
-{
-    $content = Template::generate( 'enemies', [ 'enemies' => EnemyFactory::getAllEnemies() ] );
-}
 else if ( $path === 'search/' ) // Redirect search page with GET query to cleaner URL.
 {
     $query = $request->query->get( 'query' );
@@ -79,18 +58,11 @@ else if ( str_starts_with( $path, 'search/' ) ) // Handle search page.
     ];
     $content = Template::generate( 'search', $args );
 }
-else if ( str_starts_with( $path, 'level/' ) ) // Handle individual level page.
-{    
-    $slug = str_replace( '/', '', str_replace( 'level/', '', $path ) );
-    $level = LevelFactory::getLevelBySlug( $slug );
-    if ( $level )
-    {
-        $content = Template::generate( 'level', [ 'level' => $level ] );
-    }
-}
 else
 {
-    $slug = str_replace( '/', '', $path );
+    $slug = ( str_ends_with( $path, '/' ) )
+        ? substr( $path, 0, strlen( $path ) - 1 )
+        : $path;
     $page = PageFactory::getPageBySlug( $slug );
     if ( $page )
     {

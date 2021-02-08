@@ -1,0 +1,20 @@
+<h1>Enemies</h1>
+{% for enemy in enemies %}
+    <article id="{{ enemy.slug }}">
+        <h2>{{ enemy.name }}</h2>
+        {% if enemy.whatItIs is not empty %}
+            <section>
+                <h2>What It Is</h2>
+                <div>{{ enemy.whatItIs|raw }}</div>
+            </section>
+        {% endif %}
+        <section>
+            <h2>Levels Found</h2>
+            <ul>
+                {% for level in enemy.levels %}
+                    <li>{{ level.fullName }}</li>
+                {% endfor %}
+            </ul>
+        </section>
+    </article>
+{% endfor %}

@@ -1,0 +1,78 @@
+#!/usr/bin/php
+<?php declare( strict_types = 1 );
+namespace WarioLand3;
+
+require_once( 'vendor/autoload.php' );
+
+Connection::init();
+Template::init();
+
+// Generate Levels Archive Page
+generatePage
+(
+    Template::generate( 'partials/levels-archive', [ 'regions' => RegionFactory::getAllRegions() ] ),
+    PageFactory::getPageBySlug( 'levels' ),
+    'levels',
+    'Levels'
+);
+
+// Generate Level pages.
+foreach ( LevelFactory::getAllLevels() as $level )
+{
+    $slug = 'level/' . $level->getSlug();
+    generatePage
+    (
+        Template::generate( 'partials/level', [ 'level' => $level ] ),
+        PageFactory::getPageBySlug( $slug ),
+        $slug,
+        $level->getFullName()
+    );
+}
+
+// Generate Enemies page.
+generatePage
+(
+    Template::generate( 'partials/enemies', [ 'enemies' => EnemyFactory::getAllEnemies() ] ),
+    PageFactory::getPageBySlug( 'enemies' ),
+    'enemies',
+    'Enemies'
+);
+
+// Generate Treasures page.
+generatePage
+(
+    Template::generate( 'partials/treasures', [ 'treasures' => TreasureFactory::getAllTreasures() ] ),
+    PageFactory::getPageBySlug( 'treasures' ),
+    'treasures',
+    'Treasures'
+);
+
+function generatePage( string $content, ?Page $page, string $slug, string $title ) : void
+{
+    if ( $page === null )
+    {
+        Connection::insertToTable
+        (
+            'page',
+            [
+                'page_slug' => $slug,
+                'page_title' => $title,
+                'page_content' => $content
+            ]
+        );
+    }
+    else
+    {
+        Connection::updateWhere
+        (
+            'page',
+            [
+                'page_title' => $title,
+                'page_content' => $content
+            ],
+            [
+                'page_slug' => $slug
+            ]
+        );
+    }
+}

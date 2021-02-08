@@ -7,21 +7,33 @@ class Connection
 {
     static public function insertToTable( string $table, array $data ) : string
     {
-        $bindings = [];
-        $values = array_values( $data );
-        for ( $i = 0; $i < count( $values ); ++$i )
-        {
-            $bindings[] = ParameterBinding::createBindingOfType( gettype( $values[ $i ] ), $i + 1, $values[ $i ] );
-        }
+        $bindings = self::generateBindings( $data );
         self::fetchAll( "insert into $table (" . implode( ",", array_keys( $data ) ) . ") values (" . implode( ",", array_map( fn() => "?", array_values( $data ) ) ) . ")", $bindings );
         return self::$pdo->lastInsertId();
     }
 
     static public function clearTable( string $table ) : void
     {
-        var_dump( self::fetchAll( "delete from $table" ) );
+        self::fetchAll( "delete from $table" );
     }
 
+    static public function updateWhere( string $table, array $changes, array $conditions ) : void
+    {
+        $bindings = self::generateBindings( $changes );
+        $changeStatement = implode( ", ", array_map( fn( $key ) => "$key = ?", array_keys( $changes ) ) );
+        $bindingsCount = count( $bindings );
+        $conditionsValues = array_values( $conditions );
+        $conditionsCount = count( $conditionsValues );
+        $j = 0;
+        for ( $i = $bindingsCount; $i < $bindingsCount + $conditionsCount; ++$i )
+        {
+            $bindings[] = ParameterBinding::createBindingOfType( gettype( $conditionsValues[ $j ] ), $i + 1, $conditionsValues[ $j ] );
+            ++$j;
+        }
+        $conditionsStatement = implode( " and ", array_map( fn( $key ) => "$key = ?", array_keys( $conditions ) ) );
+        $statement = "update $table set $changeStatement where $conditionsStatement;";
+        self::fetchAll( $statement, $bindings );
+    }
 
     static public function selectAll( string $table ) : array
     {
@@ -141,6 +153,17 @@ class Connection
             $credentials[ $columns[ 0 ] ] = $columns[ 1 ];
         }
         return $credentials;
+    }
+
+    static private function generateBindings( array $data ) : array
+    {
+        $bindings = [];
+        $values = array_values( $data );
+        for ( $i = 0; $i < count( $values ); ++$i )
+        {
+            $bindings[] = ParameterBinding::createBindingOfType( gettype( $values[ $i ] ), $i + 1, $values[ $i ] );
+        }
+        return $bindings;
     }
 
     static private ?\PDO $pdo;
