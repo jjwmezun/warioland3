@@ -16,130 +16,9 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: grabability; Type: TYPE; Schema: public; Owner: warioland3
---
-
-CREATE TYPE public.grabability AS ENUM (
-    'none',
-    'small',
-    'big'
-);
-
-
-ALTER TYPE public.grabability OWNER TO warioland3;
-
---
--- Name: respawn; Type: TYPE; Schema: public; Owner: warioland3
---
-
-CREATE TYPE public.respawn AS ENUM (
-    'n/a',
-    'none',
-    'change room',
-    'off-screen'
-);
-
-
-ALTER TYPE public.respawn OWNER TO warioland3;
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
-
---
--- Name: enemy; Type: TABLE; Schema: public; Owner: warioland3
---
-
-CREATE TABLE public.enemy (
-    enemy_id integer NOT NULL,
-    enemy_name character varying(255) NOT NULL,
-    enemy_name_jp character varying(255),
-    enemy_name_jp_romaji character varying(255),
-    enemy_name_jp_translation character varying(255),
-    enemy_what_it_is text,
-    enemy_what_it_does text,
-    enemy_what_you_can_do text,
-    enemy_grabability public.grabability NOT NULL,
-    enemy_respawn public.respawn NOT NULL,
-    enemy_sleeps_at_night boolean,
-    enemy_order integer NOT NULL,
-    enemy_slug character varying(255) NOT NULL
-);
-
-
-ALTER TABLE public.enemy OWNER TO warioland3;
-
---
--- Name: enemy_enemy_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
---
-
-ALTER TABLE public.enemy ALTER COLUMN enemy_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.enemy_enemy_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Name: enemy_level; Type: TABLE; Schema: public; Owner: warioland3
---
-
-CREATE TABLE public.enemy_level (
-    enemy_level_id integer NOT NULL,
-    enemy_level_enemy_id integer NOT NULL,
-    enemy_level_level_id integer NOT NULL
-);
-
-
-ALTER TABLE public.enemy_level OWNER TO warioland3;
-
---
--- Name: enemy_level_enemy_level_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
---
-
-ALTER TABLE public.enemy_level ALTER COLUMN enemy_level_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.enemy_level_enemy_level_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Name: level; Type: TABLE; Schema: public; Owner: warioland3
---
-
-CREATE TABLE public.level (
-    level_id integer NOT NULL,
-    level_name character varying NOT NULL,
-    level_region_id integer NOT NULL,
-    level_order integer NOT NULL,
-    level_slug character varying(255),
-    level_description text
-);
-
-
-ALTER TABLE public.level OWNER TO warioland3;
-
---
--- Name: level_level_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
---
-
-ALTER TABLE public.level ALTER COLUMN level_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.level_level_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
 
 --
 -- Name: page; Type: TABLE; Schema: public; Owner: warioland3
@@ -185,169 +64,65 @@ CREATE TABLE public.password_resets (
 ALTER TABLE public.password_resets OWNER TO warioland3;
 
 --
--- Name: region; Type: TABLE; Schema: public; Owner: warioland3
---
-
-CREATE TABLE public.region (
-    region_id integer NOT NULL,
-    region_name character varying NOT NULL,
-    region_code character(1) NOT NULL,
-    region_order integer NOT NULL
-);
-
-
-ALTER TABLE public.region OWNER TO warioland3;
-
---
--- Name: region_region_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
---
-
-ALTER TABLE public.region ALTER COLUMN region_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.region_region_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Name: treasure; Type: TABLE; Schema: public; Owner: warioland3
---
-
-CREATE TABLE public.treasure (
-    treasure_id integer NOT NULL,
-    treasure_name character varying(255) NOT NULL,
-    treasure_slug character varying(255) NOT NULL,
-    treasure_level_id integer NOT NULL,
-    treasure_color_id integer NOT NULL,
-    treasure_purpose text NOT NULL,
-    treasure_game_order integer NOT NULL,
-    treasure_sequence_order integer NOT NULL
-);
-
-
-ALTER TABLE public.treasure OWNER TO warioland3;
-
---
--- Name: treasure_color; Type: TABLE; Schema: public; Owner: warioland3
---
-
-CREATE TABLE public.treasure_color (
-    treasure_color_id integer NOT NULL,
-    treasure_color_name character varying(255) NOT NULL,
-    treasure_color_order integer NOT NULL
-);
-
-
-ALTER TABLE public.treasure_color OWNER TO warioland3;
-
---
--- Name: treasure_color_treasure_color_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
---
-
-ALTER TABLE public.treasure_color ALTER COLUMN treasure_color_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.treasure_color_treasure_color_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Name: treasure_treasure_id_seq; Type: SEQUENCE; Schema: public; Owner: warioland3
---
-
-ALTER TABLE public.treasure ALTER COLUMN treasure_id ADD GENERATED ALWAYS AS IDENTITY (
-    SEQUENCE NAME public.treasure_treasure_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1
-);
-
-
---
--- Data for Name: enemy; Type: TABLE DATA; Schema: public; Owner: warioland3
---
-
-COPY public.enemy (enemy_id, enemy_name, enemy_name_jp, enemy_name_jp_romaji, enemy_name_jp_translation, enemy_what_it_is, enemy_what_it_does, enemy_what_you_can_do, enemy_grabability, enemy_respawn, enemy_sleeps_at_night, enemy_order, enemy_slug) FROM stdin;
-12	Spearhead	ヤリマル	Yarimaru	Spear Circle	<p>The most common & basic enemy.</p><p>Baby blue sphere with a spade-shaped spear protruding from its face like a nose & inverted black & white eyes connected o’er the bridge.</p>			small	change room	t	1	spearhead
-\.
-
-
---
--- Data for Name: enemy_level; Type: TABLE DATA; Schema: public; Owner: warioland3
---
-
-COPY public.enemy_level (enemy_level_id, enemy_level_enemy_id, enemy_level_level_id) FROM stdin;
-21	12	11
-22	12	12
-23	12	13
-24	12	14
-25	12	16
-26	12	17
-27	12	18
-28	12	19
-29	12	20
-30	12	21
-31	12	22
-32	12	23
-33	12	24
-34	12	25
-35	12	26
-36	12	27
-37	12	29
-38	12	30
-39	12	31
-40	12	32
-\.
-
-
---
--- Data for Name: level; Type: TABLE DATA; Schema: public; Owner: warioland3
---
-
-COPY public.level (level_id, level_name, level_region_id, level_order, level_slug, level_description) FROM stdin;
-12	The Peaceful Village	1	2	n2-the-peaceful-village	\N
-13	The Vast Plain	1	3	n3-the-vast-plain	\N
-14	Bank of the Wild River	1	4	n4-bank-of-the-wild-river	\N
-15	The Tidal Coast	1	5	n5-the-tidal-coast	\N
-16	Sea Turtle Rock	1	6	n6-sea-turtle-rock	\N
-17	Desert Ruins	2	1	w1-desert-ruins	\N
-18	The Volcano’s Base	2	2	w2-the-volcanos-base	\N
-19	The Pool of Rain	2	3	w3-the-pool-of-rain	\N
-20	A Town in Chaos	2	4	w4-a-town-in-chaos	\N
-21	Beneath the Waves	2	5	w5-beneath-the-waves	\N
-22	The West Crater	2	6	w6-the-west-crater	\N
-23	The Grasslands	3	1	s1-the-grasslands	\N
-24	The Big Bridge	3	2	s2-the-big-bridge	\N
-25	Tower of Revival	3	3	s3-tower-of-revival	\N
-26	The Steep Canyon	3	4	s4-the-steep-canyon	\N
-27	Cave of Flames	3	5	s5-cave-of-flames	\N
-28	Above the Clouds	3	6	s6-above-the-clouds	\N
-29	The Stagnant Swamp	4	1	e1-the-stagnant-swamp	\N
-30	The Frigid Sea	4	2	e2-the-frigid-sea	\N
-31	Castle of Illusion	4	3	e3-castle-of-illusion	\N
-32	The Colossal Hole	4	4	e4-the-colossal-hole	\N
-33	The Warped Void	4	5	e5-the-warped-void	\N
-34	The East Crater	4	6	e6-the-east-crater	\N
-35	Forest of Fear	4	7	e7-forest-of-fear	\N
-11	Out of the Woods	1	1	n1-out-of-the-woods	<p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearhead true] & [enemy webber true], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p>
-\.
-
-
---
 -- Data for Name: page; Type: TABLE DATA; Schema: public; Owner: warioland3
 --
 
 COPY public.page (page_id, page_title, page_slug, page_content, page_created, page_updated) FROM stdin;
-1	Home	home	<div class="wl3-primary-section wl3-primary-section-index wl3-index-about" id="about" style="padding-top: 106px; margin-top: -106px;"><h1>¿What is <i>Wario Land 3</i>?</h1><p><i>Wario Land 3</i> is a puzzle platformer semicollectathon for the Game Boy Color &amp; civilization’s greatest achievement.</p></div><div class="wl3-primary-section wl3-primary-section-index wl3-index-basic-info" id="basic-info" style="padding-top: 106px; margin-top: -106px;"><h2>Basic Info</h2><div class="wl3-shot wl3-index-shot"></div><h3>System</h3><p>Game Boy Color &amp; 3DS (Virtual Console).</p><h3>Developer &amp; Publisher:</h3><p>Nintendo.</p><h3>Release Dates (Game Boy Color)</h3><ul><li><strong>Japan:</strong> 2000/03/21;</li><li><strong>Europe &amp; Australia:</strong> 14 April 2000;</li><li><strong>US:</strong> May 30, 2000.</li></ul><h3>Release Dates (3DS Virtual Console)</h3><ul><li><strong>Japan:</strong> 2012/05/12;</li><li><strong>Europe &amp; Australia:</strong> 16 December 2012;</li><li><strong>US:</strong> August 29, 2013.</li></ul><h3>Alternate Titles</h3><ul><li><strong>Japan:</strong> Wario Land 3: The Mysterious Music Box (<em>Fushigi na Orgel</em>) [ワリオランド3 不思議なオルゴ～ル]</li></ul><h3>Age Ratings</h3><ul><li><strong>Japan:</strong> A (CERO)</li><li><strong>Europe:</strong> 3+ (PEGI)</li><li><strong>Australia:</strong> G (ACB)</li><li><strong>US:</strong> E (USRB)</li></ul></div><div class="wl3-primary-section wl3-primary-section-index wl3-index-story" id="story" style="padding-top: 106px; margin-top: -106px;"><h2>The Story</h2><div class="wl3-shot wl3-index-shot wl3-shot-cave"></div><p>A true tour de force worthy o’ Hemingway. Wario’s riding his personal plane that rich people always have o’er an unnamed forest when the usual inconvenience happens: his engine spontaneously combusts, causing him to crash in said forest. The game shows off Wario’s invincibility by having him bounce ’way from the vanishing debris harmlessly.</p><div class="wl3-shot wl3-index-shot wl3-shot-figure"></div><p>There he returns to his feet &amp; looks both ways, presumably in search for a mechanic to help him rebuild his plane. He soon elects to search the cave to his right—where mechanics usually dwell.</p><p>But ’stead he finds a music box there, just sitting on a pedastal—the most logical thing to happen in this story so far. Ne’er one to let treasure lie uncollected, he grabs it, only to be warped inside by some unnamed magic.</p><p>Inside we find Wario fast asleep, only to be awoken e’en mo’ quickly to find some giant face peering in @ him. Said face, called in-game “A hidden figure,” ’splains the rest in a glorious poem worthy o’ Longfellow:</p><blockquote class="verse"><p>Are you aware, Wario ?</p><p>This world is in the music box</p><p>you were peering into.</p><p>I was the god that protected this world.</p><p>But one day, a wicked being sealed away my</p><p>power, and took control of this world.</p><p>Wario,</p><p>I want you to find the 5 music boxes needed to</p><p>break the hidden seal and recover my powers.</p><p>If you find them, I’ll send you back to</p><p>your own world.</p><p>Of course, all the treasure you find is</p><p>yours to keep!</p><p>Will you help me ?</p></blockquote><p>Wario gives the hidden figure a thumbs up &amp; jogs on his way to the o’erworld map.</p></div><div class="wl3-primary-section wl3-primary-section-index wl3-index-goal" id="goal" style="padding-top: 106px; margin-top: -106px;"><h2>The Goal</h2><p>Like most Wario Land games, the goal is to collect treasure.</p><div class="wl3-primary-subsection wl3-primary-subsection-index wl3-index-goal-chestsnkeys"><h3>Chests &amp; Keys</h3><p>In this case, the treasure are certain items found in the <span class="wl3-gray">gray</span>, <span class="wl3-red">red</span>, <span class="wl3-green">green</span>, &amp; <span class="wl3-blue">blue</span> chest found in every level,</p><div class="wl3-index-chests"><div class="wl3-index-image wl3-image-chest wl3-image-gray-chest"></div><div class="wl3-index-image wl3-image-chest wl3-image-red-chest"></div><div class="wl3-index-image wl3-image-chest wl3-image-green-chest"></div><div class="wl3-index-image wl3-image-chest wl3-image-blue-chest"></div></div><p>unlocked by keys o’ matching color.</p><div class="wl3-index-keys"><div class="wl3-index-image wl3-image-key wl3-image-gray-key"></div><div class="wl3-index-image wl3-image-key wl3-image-red-key"></div><div class="wl3-index-image wl3-image-key wl3-image-green-key"></div><div class="wl3-index-image wl3-image-key wl3-image-blue-key"></div></div><p>Touch a key to collect it,</p><div class="wl3-index-image wl3-image-key-collect"></div><p>Then touch a matching chest to collect its treasure (&amp; be kicked out o’ the level).</p><div class="wl3-index-image wl3-image-chest-collect"></div><p>’Pon returning to the level, already-opened chests will be replaced with chest doors, which will exit the level without getting a treasure, but will allow you to get a reward for <a href="#music-coins">collecting all 8 music coins</a> or will allow you to complete a Time Attack challenge.</p><div class="wl3-index-image wl3-image-chest wl3-image-chest-door"></div><p>But unlike in other games, wherein the treasures are collected on the way to the goal, in this game the treasures are the goals.</p><p>As the story stated, the primary goal is to find the 5 music boxes ’mong all the treasures you collect &amp;, after that, return to “The Temple.”</p><div class="wl3-index-music-boxes"><div class="wl3-index-image wl3-image-music-box wl3-image-music-box-1"></div><div class="wl3-index-image wl3-image-music-box wl3-image-music-box-2"></div><div class="wl3-index-image wl3-image-music-box wl3-image-music-box-3"></div><div class="wl3-index-image wl3-image-music-box wl3-image-music-box-4"></div><div class="wl3-index-image wl3-image-music-box wl3-image-music-box-5"></div></div><p>However, one needs to collect all 100 treasures (4 treasures per 25 levels) to get 100%.</p></div><div class="wl3-primary-subsection wl3-primary-subsection-index wl3-index-goal-coins" id="coins"><h3>Coins</h3><p>Defeating enemies &amp; breaking blocks sometimes causes coins to fall out. You can collect up to 999 total.</p><div class="wl3-index-image wl3-image-regular-coin"></div><p>In addition to regular coins, which give 1 coin, there are rare <span class="wl3-gray">gray</span>, <span class="wl3-red">red</span>, <span class="wl3-green">green</span>, &amp; <span class="wl3-blue">blue</span> coins that give 10 coins.</p><div class="wl3-index-colored-coins"><div class="wl3-index-image wl3-image-colored-coin wl3-image-gray-coin"></div><div class="wl3-index-image wl3-image-colored-coin wl3-image-red-coin"></div><div class="wl3-index-image wl3-image-colored-coin wl3-image-green-coin"></div><div class="wl3-index-image wl3-image-colored-coin wl3-image-blue-coin"></div></div><p>The color one gets for these rare colors indicate the treasure to which one is nearest.</p><p>Coins are only used to play minigames.</p></div><div class="wl3-primary-subsection wl3-primary-subsection-index wl3-index-goal-music-coins" id="music-coins"><h3>Music Coins</h3><p>The game also has 8 music coins in each level.</p><div class="wl3-image-music-coin"></div><p>Collect all 8 in a single playthrough o’ that level, &amp; you will fill in a piece o’ a painting corresponding to that level.</p></div></div>	2020-12-20 14:39:02.224025	2020-12-20 14:39:02.224025
-2	The Dreaded Minigolf Game	minigolf	<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-top" id="top"><h1>The Dreaded Minigolf Game</h1><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-menu"></div><p>Throughout the game you will find doors that lead to an annoyingly repetitive minigolf game.</p></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-purpose" id="purpose" style="padding-top: 106px; margin-top: -106px;"><h2>The Purpose</h2><img class="wl3-shot" src="img/minigolf-block-rise.gif"><p>Beating said game will raise the minigolf block in that level for that playthrough (reverts back to normal after returning to the map).</p><p>Playing costs a certain # o’ coins, depending on how far in the game you are. @ the <b>beginning</b> o’ the game they cost <b>10</b> coins; by the <b>end</b>, they cost <b>50</b>.</p></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-how-game-works" id="how-game-works" style="padding-top: 106px; margin-top: -106px;"><h2>How the Game Works</h2><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-clear"></div><p>Wario needs to charge attack a Para-Goom with his elbow &amp; make it land in the hole @ the far right o’ the field within a certain # o’ turns.</p><p>If you don’t get the Para-Goom in the hole by the time the # o’ turns is reached, you lose &amp; have to pay ’gain to retry.</p></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-controls" id="controls" style="padding-top: 106px; margin-top: -106px;"><h2>Controls</h2><p>Each turn is started by pressing A. Then you need to time A somewhere ’long the white-to-orange gradient. The farther right the arrow is when you hit A, the farther the Para-Goom is knocked.</p><img class="wl3-image wl3-image-center" src="img/minigolf-meter.gif"><p>Be careful: if you don’t hit the A button before the arrow reaches the end o’ the bar, Wario will just collapse &amp; you’ll waste a turn.</p><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-fail"></div><p>If you hit the arrow within the gradient, then the arrow will slide back leftward &amp; you’ll need to press A when its in the red or blue rectangles on the left side o’ the bar.</p><p>If it’s in the red, the Para-Goom will bounce a li’l forward. If it’s in the right blue spot, it’ll bounce farther ’head. If it’s on the left spot, it’ll bounce backward.</p><p>‘Gain, not pressing A before the arrow slides past these spots will cause Wario to collapse &amp; make you lose a turn.</p><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-outline"></div><p>In the pauses ’tween turns, one can move the camera leftward &amp; rightward to see the rest o’ the field. Releasing the arrow buttons will cause the camera to slide back to where Wario is, &amp; pressing A or B will cause the camera to rush back to Wario.</p><p>If one looks @ the field, one will see a pink outline o’ the Para-Goom. This shows where the Para-Goom will land with a full hit. This doesn’t include the effects o’ its after-bounce, but does automatically adjust to terrain differences (see below).</p></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-terrain" id="terrain" style="padding-top: 106px; margin-top: -106px;"><h2>Terrain</h2><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-rough"></div><p>Throughout the field are various terrain that affect one’s gameplay.</p><p>Most o’ the field is covered with generic turf on which the Para-Goom acts normally. You’ll want to have the Para-Goom land on it as much as possible.</p><p>Rough grass &amp; sand reduces the distance in which Wario can hit the Para-Goom, making one waste mo’ turns getting it o’er to the end.</p><p>Water &amp; lava are e’en worse. No matter where the Para-Goom lands in it, the Para-Goom is sent back to the leftmost end o’ the pit &amp; the player loses an extra turn (in addition to the 1 they lost hitting the Para-Goom).</p></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-levels" id="levels" style="padding-top: 106px; margin-top: -106px;"><h2>Levels with the Minigolf Game</h2><ul><li>N1 Out of the Woods</li><li>N3 The Vast Plain</li><li>N6 Sea Turtle Rock</li><li>W1 Desert Ruins</li><li>W2 The Volcano’s Base</li><li>W6 The West Crater</li><li>S1 The Grasslands</li><li>S2 The Big Bridge</li><li>S4 The Steep Canyon</li><li>S6 Above the Clouds</li><li>E4 The Colossal Hole</li></ul></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-treasures" id="treasures" style="padding-top: 106px; margin-top: -106px;"><h2>Treasures with the Minigolf Game</h2><ul><li>N1 Out of the Woods – Red Chest</li><li>N3 The Vast Plain – Red Chest</li><li>N3 The Vast Plain – Green Chest</li><li>N6 Sea Turtle Rock – Red Chest</li><li>W1 Desert Ruins – Green Chest</li><li>W2 The Volcano’s Base – Green Chest</li><li>W6 The West Crater – Blue Chest</li><li>S1 The Grasslands – Red Chest</li><li>S2 The Big Bridge – Green Chest</li><li>S4 The Steep Canyon – Blue Chest</li><li>S6 Above the Clouds – Green Chest</li><li>E4 The Colossal Hole – Red Chest</li></ul></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-trivia" id="trivia" style="padding-top: 106px; margin-top: -106px;"><h2>Trivia</h2><ul><li>Within the span o’ collecting all 100 treasures, you will need to beat this minigame 12 times.</li><li>The minigolf game is located in 11 levels.</li><li>N3 The Vast Plain is not only the only level that requires the minigolf game to be beaten to get mo’ than 1 (2) treasure, it’s also the only level to have mo’ than 1 minigolf door &amp; block.</li><li>The minigolf game is ne’er required for the gray treasure o’ any level.</li></ul></div><div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-mega-minigolf" id="mega-minigolf" style="padding-top: 106px; margin-top: -106px;"><h2>Mega Minigolf</h2><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-mega-1"></div><p>If you haven’t gotten ’nough minigolf throughout the main game, once you collect all 8 crayon treasures &amp; fully colored in the hill ’tween the North &amp; West, when passing ’tween North &amp; West on the map Wario will stop in front o’ a door in the hill, allowing the player to press Up to enter.</p><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-mega-2"></div><p>In there you will find a longer form o’ the minigolf game, where one has to play through multiple fields per course &amp; the fields are longer. Here pars don’t cause one to get game o’er if one takes too many turns, but simply affects one’s score ala real golf.</p><div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-mega-3"></div><p>You start out with 3 courses representing morn, afternoon, &amp; evening. The 4th course, which is simply a redder afternoon, is unlocked by getting all 8 music coins within a single playthrough o’ every level to fill in the picture that appears after beating a level.</p><p>Though you can’t unlock anything with this game @ all, it still costs 50 coins to play a course.</p></div>	\N	\N
+19	N4 The Steep Canyon	level/s4-the-steep-canyon	<header class="lv-header lv-n4">\n    <h3 class="lv-header-title lv-header-title-n4" title="N4 The Steep Canyon">N4 The Steep Canyon</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N4-header-description"></div>\n</div></header>	\N	\N
+20	N5 Cave of Flames	level/s5-cave-of-flames	<header class="lv-header lv-n5">\n    <h3 class="lv-header-title lv-header-title-n5" title="N5 Cave of Flames">N5 Cave of Flames</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N5-header-description"></div>\n</div></header>	\N	\N
+21	N6 Above the Clouds	level/s6-above-the-clouds	<header class="lv-header lv-n6">\n    <h3 class="lv-header-title lv-header-title-n6" title="N6 Above the Clouds">N6 Above the Clouds</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N6-header-description"></div>\n</div></header>	\N	\N
+22	N1 The Stagnant Swamp	level/e1-the-stagnant-swamp	<header class="lv-header lv-n1">\n    <h3 class="lv-header-title lv-header-title-n1" title="N1 The Stagnant Swamp">N1 The Stagnant Swamp</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N1-header-description"></div>\n</div></header>	\N	\N
+23	N2 The Frigid Sea	level/e2-the-frigid-sea	<header class="lv-header lv-n2">\n    <h3 class="lv-header-title lv-header-title-n2" title="N2 The Frigid Sea">N2 The Frigid Sea</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N2-header-description"></div>\n</div></header>	\N	\N
+24	N3 Castle of Illusion	level/e3-castle-of-illusion	<header class="lv-header lv-n3">\n    <h3 class="lv-header-title lv-header-title-n3" title="N3 Castle of Illusion">N3 Castle of Illusion</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N3-header-description"></div>\n</div></header>	\N	\N
+25	N4 The Colossal Hole	level/e4-the-colossal-hole	<header class="lv-header lv-n4">\n    <h3 class="lv-header-title lv-header-title-n4" title="N4 The Colossal Hole">N4 The Colossal Hole</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N4-header-description"></div>\n</div></header>	\N	\N
+26	N5 The Warped Void	level/e5-the-warped-void	<header class="lv-header lv-n5">\n    <h3 class="lv-header-title lv-header-title-n5" title="N5 The Warped Void">N5 The Warped Void</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N5-header-description"></div>\n</div></header>	\N	\N
+1	Home	home	<div class="wl3-primary-section wl3-primary-section-index wl3-index-about" id="about" style="padding-top: 106px; margin-top: -106px;">\n    <h1>¿What is <i>Wario Land 3</i>?</h1>\n    <p><i>Wario Land 3</i> is a puzzle platformer semicollectathon for the Game Boy Color &amp; civilization’s greatest achievement.</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-index wl3-index-basic-info" id="basic-info" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Basic Info</h2>\n    <div class="wl3-shot wl3-index-shot"></div>\n    <h3>System</h3>\n    <p>Game Boy Color &amp; 3DS (Virtual Console).</p>\n    <h3>Developer &amp; Publisher:</h3>\n    <p>Nintendo.</p>\n    <h3>Release Dates (Game Boy Color)</h3>\n    <ul>\n        <li><strong>Japan:</strong> 2000/03/21;</li>\n        <li><strong>Europe &amp; Australia:</strong> 14 April 2000;</li>\n        <li><strong>US:</strong> May 30, 2000.</li>\n    </ul>\n    <h3>Release Dates (3DS Virtual Console)</h3>\n    <ul>\n        <li><strong>Japan:</strong> 2012/05/12;</li>\n        <li><strong>Europe &amp; Australia:</strong> 16 December 2012;</li>\n        <li><strong>US:</strong> August 29, 2013.</li>\n    </ul>\n    <h3>Alternate Titles</h3>\n    <ul>\n        <li><strong>Japan:</strong> Wario Land 3: The Mysterious Music Box (<em>Fushigi na Orgel</em>) [ワリオランド3 不思議なオルゴ～ル]</li>\n    </ul>\n    <h3>Age Ratings</h3>\n    <ul>\n        <li><strong>Japan:</strong> A (CERO)</li>\n        <li><strong>Europe:</strong> 3+ (PEGI)</li>\n        <li><strong>Australia:</strong> G (ACB)</li>\n        <li><strong>US:</strong> E (USRB)</li>\n    </ul>\n</div>\n<div class="wl3-primary-section wl3-primary-section-index wl3-index-story" id="story" style="padding-top: 106px; margin-top: -106px;">\n    <h2>The Story</h2>\n    <div class="wl3-shot wl3-index-shot wl3-shot-cave"></div>\n    <p>A true tour de force worthy o’ Hemingway. Wario’s riding his personal plane that rich people always have o’er an unnamed forest when the usual inconvenience happens: his engine spontaneously combusts, causing him to crash in said forest. The game shows off Wario’s invincibility by having him bounce ’way from the vanishing debris harmlessly.</p>\n    <div class="wl3-shot wl3-index-shot wl3-shot-figure"></div>\n    <p>There he returns to his feet &amp; looks both ways, presumably in search for a mechanic to help him rebuild his plane. He soon elects to search the cave to his right—where mechanics usually dwell.</p>\n    <p>But ’stead he finds a music box there, just sitting on a pedastal—the most logical thing to happen in this story so far. Ne’er one to let treasure lie uncollected, he grabs it, only to be warped inside by some unnamed magic.</p>\n    <p>Inside we find Wario fast asleep, only to be awoken e’en mo’ quickly to find some giant face peering in @ him. Said face, called in-game “A hidden figure,” ’splains the rest in a glorious poem worthy o’ Longfellow:</p>\n    <blockquote class="verse">\n        <p>Are you aware, Wario ?</p>\n        <p>This world is in the music box</p>\n        <p>you were peering into.</p>\n        <p>I was the god that protected this world.</p>\n        <p>But one day, a wicked being sealed away my</p>\n        <p>power, and took control of this world.</p>\n        <p>Wario,</p>\n        <p>I want you to find the 5 music boxes needed to</p>\n        <p>break the hidden seal and recover my powers.</p>\n        <p>If you find them, I’ll send you back to</p>\n        <p>your own world.</p>\n        <p>Of course, all the treasure you find is</p>\n        <p>yours to keep!</p>\n        <p>Will you help me ?</p>\n    </blockquote>\n    <p>Wario gives the hidden figure a thumbs up &amp; jogs on his way to the o’erworld map.</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-index wl3-index-goal" id="goal" style="padding-top: 106px; margin-top: -106px;">\n    <h2>The Goal</h2>\n    <p>Like most Wario Land games, the goal is to collect treasure.</p>\n    <div class="wl3-primary-subsection wl3-primary-subsection-index wl3-index-goal-chestsnkeys">\n        <h3>Chests &amp; Keys</h3>\n        <p>In this case, the treasure are certain items found in the <span class="wl3-gray">gray</span>, <span class="wl3-red">red</span>, <span class="wl3-green">green</span>, &amp; <span class="wl3-blue">blue</span> chest found in every level,</p>\n        <div class="wl3-index-chests">\n            <div class="wl3-index-image wl3-image-chest wl3-image-gray-chest"></div>\n            <div class="wl3-index-image wl3-image-chest wl3-image-red-chest"></div>\n            <div class="wl3-index-image wl3-image-chest wl3-image-green-chest"></div>\n            <div class="wl3-index-image wl3-image-chest wl3-image-blue-chest"></div>\n        </div>\n        <p>unlocked by keys o’ matching color.</p>\n        <div class="wl3-index-keys">\n            <div class="wl3-index-image wl3-image-key wl3-image-gray-key"></div>\n            <div class="wl3-index-image wl3-image-key wl3-image-red-key"></div>\n            <div class="wl3-index-image wl3-image-key wl3-image-green-key"></div>\n            <div class="wl3-index-image wl3-image-key wl3-image-blue-key"></div>\n        </div>\n        <p>Touch a key to collect it,</p>\n        <div class="wl3-index-image wl3-image-key-collect"></div>\n        <p>Then touch a matching chest to collect its treasure (&amp; be kicked out o’ the level).</p>\n        <div class="wl3-index-image wl3-image-chest-collect"></div>\n        <p>’Pon returning to the level, already-opened chests will be replaced with chest doors, which will exit the level without getting a treasure, but will allow you to get a reward for <a href="#music-coins">collecting all 8 music coins</a> or will allow you to complete a Time Attack challenge.</p>\n        <div class="wl3-index-image wl3-image-chest wl3-image-chest-door"></div>\n        <p>But unlike in other games, wherein the treasures are collected on the way to the goal, in this game the treasures are the goals.</p>\n        <p>As the story stated, the primary goal is to find the 5 music boxes ’mong all the treasures you collect &amp;, after that, return to “The Temple.”</p>\n        <div class="wl3-index-music-boxes">\n            <div class="wl3-index-image wl3-image-music-box wl3-image-music-box-1"></div>\n            <div class="wl3-index-image wl3-image-music-box wl3-image-music-box-2"></div>\n            <div class="wl3-index-image wl3-image-music-box wl3-image-music-box-3"></div>\n            <div class="wl3-index-image wl3-image-music-box wl3-image-music-box-4"></div>\n            <div class="wl3-index-image wl3-image-music-box wl3-image-music-box-5"></div>\n        </div>\n        <p>However, one needs to collect all 100 treasures (4 treasures per 25 levels) to get 100%.</p>\n    </div>\n    <div class="wl3-primary-subsection wl3-primary-subsection-index wl3-index-goal-coins" id="coins">\n        <h3>Coins</h3>\n        <p>Defeating enemies &amp; breaking blocks sometimes causes coins to fall out. You can collect up to 999 total.</p>\n        <div class="wl3-index-image wl3-image-regular-coin"></div>\n        <p>In addition to regular coins, which give 1 coin, there are rare <span class="wl3-gray">gray</span>, <span class="wl3-red">red</span>, <span class="wl3-green">green</span>, &amp; <span class="wl3-blue">blue</span> coins that give 10 coins.</p>\n        <div class="wl3-index-colored-coins">\n            <div class="wl3-index-image wl3-image-colored-coin wl3-image-gray-coin"></div>\n            <div class="wl3-index-image wl3-image-colored-coin wl3-image-red-coin"></div>\n            <div class="wl3-index-image wl3-image-colored-coin wl3-image-green-coin"></div>\n            <div class="wl3-index-image wl3-image-colored-coin wl3-image-blue-coin"></div>\n        </div>\n        <p>The color one gets for these rare colors indicate the treasure to which one is nearest.</p>\n        <p>Coins are only used to play minigames.</p>\n    </div>\n    <div class="wl3-primary-subsection wl3-primary-subsection-index wl3-index-goal-music-coins" id="music-coins">\n        <h3>Music Coins</h3>\n        <p>The game also has 8 music coins in each level.</p>\n        <div class="wl3-image-music-coin"></div>\n        <p>Collect all 8 in a single playthrough o’ that level, &amp; you will fill in a piece o’ a painting corresponding to that level.</p>\n    </div>\n</div>	2020-12-20 14:39:02.224025	2020-12-20 14:39:02.224025
+6	N3 The Vast Plain	level/n3-the-vast-plain	<header class="lv-header lv-n3">\n    <h3 class="lv-header-title lv-header-title-n3" title="N3 The Vast Plain">N3 The Vast Plain</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N3-header-description"></div>\n</div></header>	\N	\N
+7	N4 Bank of the Wild River	level/n4-bank-of-the-wild-river	<header class="lv-header lv-n4">\n    <h3 class="lv-header-title lv-header-title-n4" title="N4 Bank of the Wild River">N4 Bank of the Wild River</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N4-header-description"></div>\n</div></header>	\N	\N
+8	N5 The Tidal Coast	level/n5-the-tidal-coast	<header class="lv-header lv-n5">\n    <h3 class="lv-header-title lv-header-title-n5" title="N5 The Tidal Coast">N5 The Tidal Coast</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N5-header-description"></div>\n</div></header>	\N	\N
+9	N6 Sea Turtle Rock	level/n6-sea-turtle-rock	<header class="lv-header lv-n6">\n    <h3 class="lv-header-title lv-header-title-n6" title="N6 Sea Turtle Rock">N6 Sea Turtle Rock</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N6-header-description"></div>\n</div></header>	\N	\N
+10	N1 Desert Ruins	level/w1-desert-ruins	<header class="lv-header lv-n1">\n    <h3 class="lv-header-title lv-header-title-n1" title="N1 Desert Ruins">N1 Desert Ruins</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N1-header-description"></div>\n</div></header>	\N	\N
+11	N2 The Volcano’s Base	level/w2-the-volcanos-base	<header class="lv-header lv-n2">\n    <h3 class="lv-header-title lv-header-title-n2" title="N2 The Volcano’s Base">N2 The Volcano’s Base</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N2-header-description"></div>\n</div></header>	\N	\N
+12	N3 The Pool of Rain	level/w3-the-pool-of-rain	<header class="lv-header lv-n3">\n    <h3 class="lv-header-title lv-header-title-n3" title="N3 The Pool of Rain">N3 The Pool of Rain</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N3-header-description"></div>\n</div></header>	\N	\N
+13	N4 A Town in Chaos	level/w4-a-town-in-chaos	<header class="lv-header lv-n4">\n    <h3 class="lv-header-title lv-header-title-n4" title="N4 A Town in Chaos">N4 A Town in Chaos</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N4-header-description"></div>\n</div></header>	\N	\N
+14	N5 Beneath the Waves	level/w5-beneath-the-waves	<header class="lv-header lv-n5">\n    <h3 class="lv-header-title lv-header-title-n5" title="N5 Beneath the Waves">N5 Beneath the Waves</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N5-header-description"></div>\n</div></header>	\N	\N
+15	N6 The West Crater	level/w6-the-west-crater	<header class="lv-header lv-n6">\n    <h3 class="lv-header-title lv-header-title-n6" title="N6 The West Crater">N6 The West Crater</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N6-header-description"></div>\n</div></header>	\N	\N
+16	N1 The Grasslands	level/s1-the-grasslands	<header class="lv-header lv-n1">\n    <h3 class="lv-header-title lv-header-title-n1" title="N1 The Grasslands">N1 The Grasslands</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N1-header-description"></div>\n</div></header>	\N	\N
+17	N2 The Big Bridge	level/s2-the-big-bridge	<header class="lv-header lv-n2">\n    <h3 class="lv-header-title lv-header-title-n2" title="N2 The Big Bridge">N2 The Big Bridge</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N2-header-description"></div>\n</div></header>	\N	\N
+18	N3 Tower of Revival	level/s3-tower-of-revival	<header class="lv-header lv-n3">\n    <h3 class="lv-header-title lv-header-title-n3" title="N3 Tower of Revival">N3 Tower of Revival</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N3-header-description"></div>\n</div></header>	\N	\N
+2	The Dreaded Minigolf Game	minigolf	<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-top" id="top">\n    <h1>The Dreaded Minigolf Game</h1>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-menu"></div>\n    <p>Throughout the game you will find doors that lead to an annoyingly repetitive minigolf game.</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-purpose" id="purpose" style="padding-top: 106px; margin-top: -106px;">\n    <h2>The Purpose</h2><img class="wl3-shot" src="img/minigolf-block-rise.gif">\n    <p>Beating said game will raise the minigolf block in that level for that playthrough (reverts back to normal after returning to the map).</p>\n    <p>Playing costs a certain # o’ coins, depending on how far in the game you are. @ the <b>beginning</b> o’ the game they cost <b>10</b> coins; by the <b>end</b>, they cost <b>50</b>.</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-how-game-works" id="how-game-works" style="padding-top: 106px; margin-top: -106px;">\n    <h2>How the Game Works</h2>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-clear"></div>\n    <p>Wario needs to charge attack a Para-Goom with his elbow &amp; make it land in the hole @ the far right o’ the field within a certain # o’ turns.</p>\n    <p>If you don’t get the Para-Goom in the hole by the time the # o’ turns is reached, you lose &amp; have to pay ’gain to retry.</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-controls" id="controls" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Controls</h2>\n    <p>Each turn is started by pressing A. Then you need to time A somewhere ’long the white-to-orange gradient. The farther right the arrow is when you hit A, the farther the Para-Goom is knocked.</p><img class="wl3-image wl3-image-center" src="img/minigolf-meter.gif">\n    <p>Be careful: if you don’t hit the A button before the arrow reaches the end o’ the bar, Wario will just collapse &amp; you’ll waste a turn.</p>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-fail"></div>\n    <p>If you hit the arrow within the gradient, then the arrow will slide back leftward &amp; you’ll need to press A when its in the red or blue rectangles on the left side o’ the bar.</p>\n    <p>If it’s in the red, the Para-Goom will bounce a li’l forward. If it’s in the right blue spot, it’ll bounce farther ’head. If it’s on the left spot, it’ll bounce backward.</p>\n    <p>‘Gain, not pressing A before the arrow slides past these spots will cause Wario to collapse &amp; make you lose a turn.</p>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-outline"></div>\n    <p>In the pauses ’tween turns, one can move the camera leftward &amp; rightward to see the rest o’ the field. Releasing the arrow buttons will cause the camera to slide back to where Wario is, &amp; pressing A or B will cause the camera to rush back to Wario.</p>\n    <p>If one looks @ the field, one will see a pink outline o’ the Para-Goom. This shows where the Para-Goom will land with a full hit. This doesn’t include the effects o’ its after-bounce, but does automatically adjust to terrain differences (see below).</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-terrain" id="terrain" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Terrain</h2>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-rough"></div>\n    <p>Throughout the field are various terrain that affect one’s gameplay.</p>\n    <p>Most o’ the field is covered with generic turf on which the Para-Goom acts normally. You’ll want to have the Para-Goom land on it as much as possible.</p>\n    <p>Rough grass &amp; sand reduces the distance in which Wario can hit the Para-Goom, making one waste mo’ turns getting it o’er to the end.</p>\n    <p>Water &amp; lava are e’en worse. No matter where the Para-Goom lands in it, the Para-Goom is sent back to the leftmost end o’ the pit &amp; the player loses an extra turn (in addition to the 1 they lost hitting the Para-Goom).</p>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-levels" id="levels" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Levels with the Minigolf Game</h2>\n    <ul>\n        <li>N1 Out of the Woods</li>\n        <li>N3 The Vast Plain</li>\n        <li>N6 Sea Turtle Rock</li>\n        <li>W1 Desert Ruins</li>\n        <li>W2 The Volcano’s Base</li>\n        <li>W6 The West Crater</li>\n        <li>S1 The Grasslands</li>\n        <li>S2 The Big Bridge</li>\n        <li>S4 The Steep Canyon</li>\n        <li>S6 Above the Clouds</li>\n        <li>E4 The Colossal Hole</li>\n    </ul>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-treasures" id="treasures" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Treasures with the Minigolf Game</h2>\n    <ul>\n        <li>N1 Out of the Woods – Red Chest</li>\n        <li>N3 The Vast Plain – Red Chest</li>\n        <li>N3 The Vast Plain – Green Chest</li>\n        <li>N6 Sea Turtle Rock – Red Chest</li>\n        <li>W1 Desert Ruins – Green Chest</li>\n        <li>W2 The Volcano’s Base – Green Chest</li>\n        <li>W6 The West Crater – Blue Chest</li>\n        <li>S1 The Grasslands – Red Chest</li>\n        <li>S2 The Big Bridge – Green Chest</li>\n        <li>S4 The Steep Canyon – Blue Chest</li>\n        <li>S6 Above the Clouds – Green Chest</li>\n        <li>E4 The Colossal Hole – Red Chest</li>\n    </ul>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-trivia" id="trivia" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Trivia</h2>\n    <ul>\n        <li>Within the span o’ collecting all 100 treasures, you will need to beat this minigame 12 times.</li>\n        <li>The minigolf game is located in 11 levels.</li>\n        <li>N3 The Vast Plain is not only the only level that requires the minigolf game to be beaten to get mo’ than 1 (2) treasure, it’s also the only level to have mo’ than 1 minigolf door &amp; block.</li>\n        <li>The minigolf game is ne’er required for the gray treasure o’ any level.</li>\n    </ul>\n</div>\n<div class="wl3-primary-section wl3-primary-section-minigolf wl3-minigolf-mega-minigolf" id="mega-minigolf" style="padding-top: 106px; margin-top: -106px;">\n    <h2>Mega Minigolf</h2>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-mega-1"></div>\n    <p>If you haven’t gotten ’nough minigolf throughout the main game, once you collect all 8 crayon treasures &amp; fully colored in the hill ’tween the North &amp; West, when passing ’tween North &amp; West on the map Wario will stop in front o’ a door in the hill, allowing the player to press Up to enter.</p>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-mega-2"></div>\n    <p>In there you will find a longer form o’ the minigolf game, where one has to play through multiple fields per course &amp; the fields are longer. Here pars don’t cause one to get game o’er if one takes too many turns, but simply affects one’s score ala real golf.</p>\n    <div class="wl3-shot wl3-shot-minigolf wl3-shot-minigolf-mega-3"></div>\n    <p>You start out with 3 courses representing morn, afternoon, &amp; evening. The 4th course, which is simply a redder afternoon, is unlocked by getting all 8 music coins within a single playthrough o’ every level to fill in the picture that appears after beating a level.</p>\n    <p>Though you can’t unlock anything with this game @ all, it still costs 50 coins to play a course.</p>\n</div>	\N	\N
+49	S5 Cave of Flames	level/cave-of-flames	<header class="lv-header lv-s5">\n    <h3 class="lv-header-title lv-header-title-s5" title="S5 Cave of Flames">S5 Cave of Flames</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S5-header-description"></div>\n</div></header>	\N	\N
+54	E4 The Colossal Hole	level/the-colossal-hole	<header class="lv-header lv-e4">\n    <h3 class="lv-header-title lv-header-title-e4" title="E4 The Colossal Hole">E4 The Colossal Hole</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E4-header-description"></div>\n</div></header>	\N	\N
+5	N2 The Peaceful Village	level/n2-the-peaceful-village	<header class="lv-header lv-n2">\n    <h3 class="lv-header-title lv-header-title-n2" title="N2 The Peaceful Village">N2 The Peaceful Village</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N2-header-description"></div>\n</div></header>	\N	\N
+27	N6 The East Crater	level/e6-the-east-crater	<header class="lv-header lv-n6">\n    <h3 class="lv-header-title lv-header-title-n6" title="N6 The East Crater">N6 The East Crater</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N6-header-description"></div>\n</div></header>	\N	\N
+50	S6 Above the Clouds	level/above-the-clouds	<header class="lv-header lv-s6">\n    <h3 class="lv-header-title lv-header-title-s6" title="S6 Above the Clouds">S6 Above the Clouds</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S6-header-description"></div>\n</div></header>	\N	\N
+28	N7 Forest of Fear	level/e7-forest-of-fear	<header class="lv-header lv-n7">\n    <h3 class="lv-header-title lv-header-title-n7" title="N7 Forest of Fear">N7 Forest of Fear</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N7-header-description"></div>\n</div></header>	\N	\N
+29	N1 Out of the Woods	level/n1-out-of-the-woods	<header class="lv-header lv-n1">\n    <h3 class="lv-header-title lv-header-title-n1" title="N1 Out of the Woods">N1 Out of the Woods</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N1-header-description"><p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge <a href="/enemies/#spearhead">Spearheads</a> & [enemy webber true], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p></div>\n</div></header>	\N	\N
+55	E5 The Warped Void	level/the-warped-void	<header class="lv-header lv-e5">\n    <h3 class="lv-header-title lv-header-title-e5" title="E5 The Warped Void">E5 The Warped Void</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E5-header-description"></div>\n</div></header>	\N	\N
+51	E1 The Stagnant Swamp	level/the-stagnant-swamp	<header class="lv-header lv-e1">\n    <h3 class="lv-header-title lv-header-title-e1" title="E1 The Stagnant Swamp">E1 The Stagnant Swamp</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E1-header-description"></div>\n</div></header>	\N	\N
+56	E6 The East Crater	level/the-east-crater	<header class="lv-header lv-e6">\n    <h3 class="lv-header-title lv-header-title-e6" title="E6 The East Crater">E6 The East Crater</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E6-header-description"></div>\n</div></header>	\N	\N
+52	E2 The Frigid Sea	level/the-frigid-sea	<header class="lv-header lv-e2">\n    <h3 class="lv-header-title lv-header-title-e2" title="E2 The Frigid Sea">E2 The Frigid Sea</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E2-header-description"></div>\n</div></header>	\N	\N
+57	E7 Forest of Fear	level/forest-of-fear	<header class="lv-header lv-e7">\n    <h3 class="lv-header-title lv-header-title-e7" title="E7 Forest of Fear">E7 Forest of Fear</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E7-header-description"></div>\n</div></header>	\N	\N
+53	E3 Castle of Illusion	level/castle-of-illusion	<header class="lv-header lv-e3">\n    <h3 class="lv-header-title lv-header-title-e3" title="E3 Castle of Illusion">E3 Castle of Illusion</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E3-header-description"></div>\n</div></header>	\N	\N
+32	Treasures	treasures	<h1>Treasures</h1>\n<table>\n    <thead>\n        <tr>\n            <th scope="col">Item</th>\n            <th scope="col" colspan="2">Location</th>\n            <th scope="col">Purpose</th>\n        </tr>\n    </thead>\n    <tr>\n        <th scope="row">1st Music Box</th>\n        <td>S1 The Grasslands</td>\n        <td>Gray</td>\n        <td>Opens level <a href="/level/the-big-bridge/">“S2 The Big Bridge”</a>.</td>\n    </tr>\n</table>	\N	\N
+42	W4 A Town in Chaos	level/a-town-in-chaos	<header class="lv-header lv-w4">\n    <h3 class="lv-header-title lv-header-title-w4" title="W4 A Town in Chaos">W4 A Town in Chaos</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W4-header-description"></div>\n</div></header>	\N	\N
+45	S1 The Grasslands	level/the-grasslands	<header class="lv-header lv-s1">\n    <h3 class="lv-header-title lv-header-title-s1" title="S1 The Grasslands">S1 The Grasslands</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S1-header-description"></div>\n</div></header>	\N	\N
+48	S4 The Steep Canyon	level/the-steep-canyon	<header class="lv-header lv-s4">\n    <h3 class="lv-header-title lv-header-title-s4" title="S4 The Steep Canyon">S4 The Steep Canyon</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S4-header-description"></div>\n</div></header>	\N	\N
+34	N2 The Peaceful Village	level/the-peaceful-village	<header class="lv-header lv-n2">\n    <h3 class="lv-header-title lv-header-title-n2" title="N2 The Peaceful Village">N2 The Peaceful Village</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N2-header-description"></div>\n</div></header>	\N	\N
+46	S2 The Big Bridge	level/the-big-bridge	<header class="lv-header lv-s2">\n    <h3 class="lv-header-title lv-header-title-s2" title="S2 The Big Bridge">S2 The Big Bridge</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S2-header-description"></div>\n</div></header>	\N	\N
+40	W2 The Volcano’s Base	level/the-volcanos-base	<header class="lv-header lv-w2">\n    <h3 class="lv-header-title lv-header-title-w2" title="W2 The Volcano’s Base">W2 The Volcano’s Base</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W2-header-description"></div>\n</div></header>	\N	\N
+33	N1 Out of the Woods	level/out-of-the-woods	<header class="lv-header lv-n1">\n    <h3 class="lv-header-title lv-header-title-n1" title="N1 Out of the Woods">N1 Out of the Woods</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N1-header-description"><p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearheads] & [enemy webbers], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p></div>\n</div></header>	\N	\N
+37	N5 The Tidal Coast	level/the-tidal-coast	<header class="lv-header lv-n5">\n    <h3 class="lv-header-title lv-header-title-n5" title="N5 The Tidal Coast">N5 The Tidal Coast</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N5-header-description"></div>\n</div></header>	\N	\N
+43	W5 Beneath the Waves	level/beneath-the-waves	<header class="lv-header lv-w5">\n    <h3 class="lv-header-title lv-header-title-w5" title="W5 Beneath the Waves">W5 Beneath the Waves</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W5-header-description"></div>\n</div></header>	\N	\N
+35	N3 The Vast Plain	level/the-vast-plain	<header class="lv-header lv-n3">\n    <h3 class="lv-header-title lv-header-title-n3" title="N3 The Vast Plain">N3 The Vast Plain</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N3-header-description"></div>\n</div></header>	\N	\N
+47	S3 Tower of Revival	level/tower-of-revival	<header class="lv-header lv-s3">\n    <h3 class="lv-header-title lv-header-title-s3" title="S3 Tower of Revival">S3 Tower of Revival</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S3-header-description"></div>\n</div></header>	\N	\N
+44	W6 The West Crater	level/the-west-crater	<header class="lv-header lv-w6">\n    <h3 class="lv-header-title lv-header-title-w6" title="W6 The West Crater">W6 The West Crater</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W6-header-description"></div>\n</div></header>	\N	\N
+38	N6 Sea Turtle Rock	level/sea-turtle-rock	<header class="lv-header lv-n6">\n    <h3 class="lv-header-title lv-header-title-n6" title="N6 Sea Turtle Rock">N6 Sea Turtle Rock</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N6-header-description"></div>\n</div></header>	\N	\N
+41	W3 The Pool of Rain	level/the-pool-of-rain	<header class="lv-header lv-w3">\n    <h3 class="lv-header-title lv-header-title-w3" title="W3 The Pool of Rain">W3 The Pool of Rain</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W3-header-description"></div>\n</div></header>	\N	\N
+36	N4 Bank of the Wild River	level/bank-of-the-wild-river	<header class="lv-header lv-n4">\n    <h3 class="lv-header-title lv-header-title-n4" title="N4 Bank of the Wild River">N4 Bank of the Wild River</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N4-header-description"></div>\n</div></header>	\N	\N
+39	W1 Desert Ruins	level/desert-ruins	<header class="lv-header lv-w1">\n    <h3 class="lv-header-title lv-header-title-w1" title="W1 Desert Ruins">W1 Desert Ruins</h3>\n    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W1-header-description"></div>\n</div></header>	\N	\N
+31	Enemies	enemies	<h1>Enemies</h1>\n    <article id="spearhead">\n        <h2>Spearhead</h2>\n                    <section>\n                <h2>What It Is</h2>\n                <div><p>The most common & basic enemy.</p><p>Baby blue sphere with a spade-shaped spear protruding from its face like a nose & inverted black & white eyes connected o’er the bridge.</p></div>\n            </section>\n                <section>\n            <h2>Levels Found</h2>\n            <ul>\n                                    <li>N1 Out of the Woods</li>\n                                    <li>N2 The Peaceful Village</li>\n                                    <li>N3 The Vast Plain</li>\n                                    <li>N4 Bank of the Wild River</li>\n                                    <li>N6 Sea Turtle Rock</li>\n                                    <li>W1 Desert Ruins</li>\n                                    <li>W2 The Volcano’s Base</li>\n                                    <li>W3 The Pool of Rain</li>\n                                    <li>W4 A Town in Chaos</li>\n                                    <li>W5 Beneath the Waves</li>\n                                    <li>W6 The West Crater</li>\n                                    <li>S1 The Grasslands</li>\n                                    <li>S2 The Big Bridge</li>\n                                    <li>S3 Tower of Revival</li>\n                                    <li>S4 The Steep Canyon</li>\n                                    <li>S5 Cave of Flames</li>\n                                    <li>E1 The Stagnant Swamp</li>\n                                    <li>E2 The Frigid Sea</li>\n                                    <li>E3 Castle of Illusion</li>\n                                    <li>E4 The Colossal Hole</li>\n                            </ul>\n        </section>\n    </article>\n	\N	\N
+30	Levels	levels	<h1>Levels</h1>\n    <section>\n        <h2>North</h2>\n        <ul>\n                            <article class="lv-block lv-N1">\n                    <h3 class="lv-header-title lv-header-title-N1" title="N1 Out of the Woods">\n                        <a href="/level/out-of-the-woods/">\n                            N1 Out of the Woods\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N1-header-description"><p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearheads] & [enemy webbers], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p></div>\n</div>                </article>\n                            <article class="lv-block lv-N2">\n                    <h3 class="lv-header-title lv-header-title-N2" title="N2 The Peaceful Village">\n                        <a href="/level/the-peaceful-village/">\n                            N2 The Peaceful Village\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N2-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-N3">\n                    <h3 class="lv-header-title lv-header-title-N3" title="N3 The Vast Plain">\n                        <a href="/level/the-vast-plain/">\n                            N3 The Vast Plain\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N3-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-N4">\n                    <h3 class="lv-header-title lv-header-title-N4" title="N4 Bank of the Wild River">\n                        <a href="/level/bank-of-the-wild-river/">\n                            N4 Bank of the Wild River\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N4-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-N5">\n                    <h3 class="lv-header-title lv-header-title-N5" title="N5 The Tidal Coast">\n                        <a href="/level/the-tidal-coast/">\n                            N5 The Tidal Coast\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N5-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-N6">\n                    <h3 class="lv-header-title lv-header-title-N6" title="N6 Sea Turtle Rock">\n                        <a href="/level/sea-turtle-rock/">\n                            N6 Sea Turtle Rock\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-N6-header-description"></div>\n</div>                </article>\n                    </ul>\n    </section>\n    <section>\n        <h2>West</h2>\n        <ul>\n                            <article class="lv-block lv-W1">\n                    <h3 class="lv-header-title lv-header-title-W1" title="W1 Desert Ruins">\n                        <a href="/level/desert-ruins/">\n                            W1 Desert Ruins\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W1-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-W2">\n                    <h3 class="lv-header-title lv-header-title-W2" title="W2 The Volcano’s Base">\n                        <a href="/level/the-volcanos-base/">\n                            W2 The Volcano’s Base\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W2-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-W3">\n                    <h3 class="lv-header-title lv-header-title-W3" title="W3 The Pool of Rain">\n                        <a href="/level/the-pool-of-rain/">\n                            W3 The Pool of Rain\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W3-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-W4">\n                    <h3 class="lv-header-title lv-header-title-W4" title="W4 A Town in Chaos">\n                        <a href="/level/a-town-in-chaos/">\n                            W4 A Town in Chaos\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W4-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-W5">\n                    <h3 class="lv-header-title lv-header-title-W5" title="W5 Beneath the Waves">\n                        <a href="/level/beneath-the-waves/">\n                            W5 Beneath the Waves\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W5-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-W6">\n                    <h3 class="lv-header-title lv-header-title-W6" title="W6 The West Crater">\n                        <a href="/level/the-west-crater/">\n                            W6 The West Crater\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-W6-header-description"></div>\n</div>                </article>\n                    </ul>\n    </section>\n    <section>\n        <h2>South</h2>\n        <ul>\n                            <article class="lv-block lv-S1">\n                    <h3 class="lv-header-title lv-header-title-S1" title="S1 The Grasslands">\n                        <a href="/level/the-grasslands/">\n                            S1 The Grasslands\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S1-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-S2">\n                    <h3 class="lv-header-title lv-header-title-S2" title="S2 The Big Bridge">\n                        <a href="/level/the-big-bridge/">\n                            S2 The Big Bridge\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S2-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-S3">\n                    <h3 class="lv-header-title lv-header-title-S3" title="S3 Tower of Revival">\n                        <a href="/level/tower-of-revival/">\n                            S3 Tower of Revival\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S3-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-S4">\n                    <h3 class="lv-header-title lv-header-title-S4" title="S4 The Steep Canyon">\n                        <a href="/level/the-steep-canyon/">\n                            S4 The Steep Canyon\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S4-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-S5">\n                    <h3 class="lv-header-title lv-header-title-S5" title="S5 Cave of Flames">\n                        <a href="/level/cave-of-flames/">\n                            S5 Cave of Flames\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S5-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-S6">\n                    <h3 class="lv-header-title lv-header-title-S6" title="S6 Above the Clouds">\n                        <a href="/level/above-the-clouds/">\n                            S6 Above the Clouds\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-S6-header-description"></div>\n</div>                </article>\n                    </ul>\n    </section>\n    <section>\n        <h2>East</h2>\n        <ul>\n                            <article class="lv-block lv-E1">\n                    <h3 class="lv-header-title lv-header-title-E1" title="E1 The Stagnant Swamp">\n                        <a href="/level/the-stagnant-swamp/">\n                            E1 The Stagnant Swamp\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E1-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-E2">\n                    <h3 class="lv-header-title lv-header-title-E2" title="E2 The Frigid Sea">\n                        <a href="/level/the-frigid-sea/">\n                            E2 The Frigid Sea\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E2-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-E3">\n                    <h3 class="lv-header-title lv-header-title-E3" title="E3 Castle of Illusion">\n                        <a href="/level/castle-of-illusion/">\n                            E3 Castle of Illusion\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E3-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-E4">\n                    <h3 class="lv-header-title lv-header-title-E4" title="E4 The Colossal Hole">\n                        <a href="/level/the-colossal-hole/">\n                            E4 The Colossal Hole\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E4-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-E5">\n                    <h3 class="lv-header-title lv-header-title-E5" title="E5 The Warped Void">\n                        <a href="/level/the-warped-void/">\n                            E5 The Warped Void\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E5-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-E6">\n                    <h3 class="lv-header-title lv-header-title-E6" title="E6 The East Crater">\n                        <a href="/level/the-east-crater/">\n                            E6 The East Crater\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E6-header-description"></div>\n</div>                </article>\n                            <article class="lv-block lv-E7">\n                    <h3 class="lv-header-title lv-header-title-E7" title="E7 Forest of Fear">\n                        <a href="/level/forest-of-fear/">\n                            E7 Forest of Fear\n                        </a>\n                    </h3>\n                    <div class="lv-header-text">\n    <div class="lv-header-desc lv-E7-header-description"></div>\n</div>                </article>\n                    </ul>\n    </section>\n	\N	\N
 \.
 
 
@@ -360,133 +135,10 @@ COPY public.password_resets (email, token, created_at) FROM stdin;
 
 
 --
--- Data for Name: region; Type: TABLE DATA; Schema: public; Owner: warioland3
---
-
-COPY public.region (region_id, region_name, region_code, region_order) FROM stdin;
-1	North	N	1
-2	West	W	2
-3	South	S	3
-4	East	E	4
-\.
-
-
---
--- Data for Name: treasure; Type: TABLE DATA; Schema: public; Owner: warioland3
---
-
-COPY public.treasure (treasure_id, treasure_name, treasure_slug, treasure_level_id, treasure_color_id, treasure_purpose, treasure_game_order, treasure_sequence_order) FROM stdin;
-1	1st Music Box	1st-music-box	23	1	Opens level [level s2].	1	10
-\.
-
-
---
--- Data for Name: treasure_color; Type: TABLE DATA; Schema: public; Owner: warioland3
---
-
-COPY public.treasure_color (treasure_color_id, treasure_color_name, treasure_color_order) FROM stdin;
-1	Gray	1
-2	Red	2
-3	Green	3
-4	Blue	4
-\.
-
-
---
--- Name: enemy_enemy_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
---
-
-SELECT pg_catalog.setval('public.enemy_enemy_id_seq', 12, true);
-
-
---
--- Name: enemy_level_enemy_level_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
---
-
-SELECT pg_catalog.setval('public.enemy_level_enemy_level_id_seq', 40, true);
-
-
---
--- Name: level_level_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
---
-
-SELECT pg_catalog.setval('public.level_level_id_seq', 35, true);
-
-
---
 -- Name: page_page_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
 --
 
-SELECT pg_catalog.setval('public.page_page_id_seq', 2, true);
-
-
---
--- Name: region_region_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
---
-
-SELECT pg_catalog.setval('public.region_region_id_seq', 4, true);
-
-
---
--- Name: treasure_color_treasure_color_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
---
-
-SELECT pg_catalog.setval('public.treasure_color_treasure_color_id_seq', 4, true);
-
-
---
--- Name: treasure_treasure_id_seq; Type: SEQUENCE SET; Schema: public; Owner: warioland3
---
-
-SELECT pg_catalog.setval('public.treasure_treasure_id_seq', 1, true);
-
-
---
--- Name: enemy enemy_enemy_name_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy
-    ADD CONSTRAINT enemy_enemy_name_key UNIQUE (enemy_name);
-
-
---
--- Name: enemy enemy_enemy_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy
-    ADD CONSTRAINT enemy_enemy_order_key UNIQUE (enemy_order);
-
-
---
--- Name: enemy enemy_enemy_slug_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy
-    ADD CONSTRAINT enemy_enemy_slug_key UNIQUE (enemy_slug);
-
-
---
--- Name: enemy_level enemy_level_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy_level
-    ADD CONSTRAINT enemy_level_pkey PRIMARY KEY (enemy_level_id);
-
-
---
--- Name: enemy enemy_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy
-    ADD CONSTRAINT enemy_pkey PRIMARY KEY (enemy_id);
-
-
---
--- Name: level level_level_id_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.level
-    ADD CONSTRAINT level_level_id_key UNIQUE (level_id);
+SELECT pg_catalog.setval('public.page_page_id_seq', 57, true);
 
 
 --
@@ -498,138 +150,10 @@ ALTER TABLE ONLY public.page
 
 
 --
--- Name: region region_region_code_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.region
-    ADD CONSTRAINT region_region_code_key UNIQUE (region_code);
-
-
---
--- Name: region region_region_id_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.region
-    ADD CONSTRAINT region_region_id_key UNIQUE (region_id);
-
-
---
--- Name: region region_region_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.region
-    ADD CONSTRAINT region_region_order_key UNIQUE (region_order);
-
-
---
--- Name: treasure_color treasure_color_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure_color
-    ADD CONSTRAINT treasure_color_pkey PRIMARY KEY (treasure_color_id);
-
-
---
--- Name: treasure_color treasure_color_treasure_color_name_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure_color
-    ADD CONSTRAINT treasure_color_treasure_color_name_key UNIQUE (treasure_color_name);
-
-
---
--- Name: treasure_color treasure_color_treasure_color_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure_color
-    ADD CONSTRAINT treasure_color_treasure_color_order_key UNIQUE (treasure_color_order);
-
-
---
--- Name: treasure treasure_pkey; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_pkey PRIMARY KEY (treasure_id);
-
-
---
--- Name: treasure treasure_treasure_game_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_treasure_game_order_key UNIQUE (treasure_game_order);
-
-
---
--- Name: treasure treasure_treasure_name_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_treasure_name_key UNIQUE (treasure_name);
-
-
---
--- Name: treasure treasure_treasure_sequence_order_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_treasure_sequence_order_key UNIQUE (treasure_sequence_order);
-
-
---
--- Name: treasure treasure_treasure_slug_key; Type: CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_treasure_slug_key UNIQUE (treasure_slug);
-
-
---
 -- Name: password_resets_email_index; Type: INDEX; Schema: public; Owner: warioland3
 --
 
 CREATE INDEX password_resets_email_index ON public.password_resets USING btree (email);
-
-
---
--- Name: enemy_level enemy_level_enemy_level_enemy_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy_level
-    ADD CONSTRAINT enemy_level_enemy_level_enemy_id_fkey FOREIGN KEY (enemy_level_enemy_id) REFERENCES public.enemy(enemy_id);
-
-
---
--- Name: enemy_level enemy_level_enemy_level_level_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.enemy_level
-    ADD CONSTRAINT enemy_level_enemy_level_level_id_fkey FOREIGN KEY (enemy_level_level_id) REFERENCES public.level(level_id);
-
-
---
--- Name: level level_level_region_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.level
-    ADD CONSTRAINT level_level_region_id_fkey FOREIGN KEY (level_region_id) REFERENCES public.region(region_id);
-
-
---
--- Name: treasure treasure_treasure_color_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_treasure_color_id_fkey FOREIGN KEY (treasure_color_id) REFERENCES public.treasure_color(treasure_color_id);
-
-
---
--- Name: treasure treasure_treasure_level_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: warioland3
---
-
-ALTER TABLE ONLY public.treasure
-    ADD CONSTRAINT treasure_treasure_level_id_fkey FOREIGN KEY (treasure_level_id) REFERENCES public.level(level_id);
 
 
 --

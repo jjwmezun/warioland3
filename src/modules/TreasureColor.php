@@ -5,20 +5,19 @@ namespace WarioLand3;
 
 class TreasureColor
 {
-    public function getId() : int
+    public function __construct
+    (
+        private int $number,
+        private string $name
+    ) {}
+
+    public function getNumber() : int
     {
-        return $this->id;
+        return $this->number;
     }
 
     public function getName() : string
     {
         return $this->name;
     }
-
-    public function __construct
-    (
-        private int $id,
-        private string $name,
-        private int $order
-    ) {}
 }

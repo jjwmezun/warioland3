@@ -7,27 +7,26 @@ class Level
 {
     public function __construct
     (
-        private int $id,
         private string $name,
         private string $slug,
         private int $number,
-        private ?string $description,
-        private Region|int $region
+        private string $description,
+        private Region $region
     ) {}
-
-    public function getId() : int
-    {
-        return $this->id;
-    }
 
     public function getName() : string
     {
         return $this->name;
     }
 
+    public function getCode() : string
+    {
+        return $this->getRegion()->getCode() . $this->number;
+    }
+
     public function getFullName() : string
     {
-        return $this->getRegion()->getCode() . $this->number . ' ' . $this->name;
+        return self::getCode() . ' ' . $this->name;
     }
 
     public function getSlug() : string
@@ -45,17 +44,13 @@ class Level
         return ( $this->getRegion()->getOrder() - 1 ) * 6 + $this->number;
     }
 
-    public function getDescription() : ?string
+    public function getDescription() : string
     {
         return $this->description;
     }
 
     public function getRegion() : Region
     {
-        if ( gettype( $this->region ) === 'integer' )
-        {
-            $this->region = RegionFactory::getRegionById( $this->region );
-        }
         return $this->region;
     }
 }

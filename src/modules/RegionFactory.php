@@ -7,25 +7,44 @@ class RegionFactory
 {
     public static function getAllRegions() : array
     {
-        return array_map( [ self::class, 'getRegionFromData' ], Connection::selectAllOrderedBy( "region", [ "region_order" ] ) );
+        if ( empty( self::$regions ) )
+        {
+            self::generateRegions();
+        }
+        return self::$regions;
     }
 
-    public static function getRegionByCode( string $code ) : ?Region
+    public static function getRegionByCode( string $code ) : Region
     {
-        $data = Connection::selectOne( 'region', [ ParameterBinding::createStringBinding( 'region_code', strtoupper( $code ) ) ] );
-        return ( !empty( $data ) ) ? self::getRegionFromData( $data ) : null;
+        if ( empty( self::$regionsByCode ) )
+        {
+            self::generateRegions();
+        }
+        return self::$regionsByCode[ $code ];
     }
 
-    public static function getRegionById( int $id ) : ?Region
+    private static function generateRegions() : void
     {
-        $data = Connection::selectOne( 'region', [ ParameterBinding::createIntBinding( 'region_id', $id ) ] );
-        return ( !empty( $data ) ) ? self::getRegionFromData( $data ) : null;
+        self::$regions = [];
+        self::$regionsByCode = [];
+        $i = 0;
+        foreach ( self::REGION_DATA as $data )
+        {
+            $region = new Region( $data[ 'name' ], $data[ 'code' ], $i );
+            self::$regions[] = $region;
+            self::$regionsByCode[ $region->getCode() ] = $region;
+            ++$i;
+        }
     }
 
-    private static function getRegionFromData( array $data ) : Region
-    {
-        return new Region( $data[ "region_id" ], $data[ "region_name" ], $data[ "region_code" ], $data[ "region_order" ] );
-    }
+    private static array $regions = [];
+    private static array $regionsByCode = [];
 
-    private static array $regionsLoaded = [];
+    private const REGION_DATA =
+    [
+        [ 'name' => 'North', 'code' => 'N' ],
+        [ 'name' => 'West', 'code' => 'W' ],
+        [ 'name' => 'South', 'code' => 'S' ],
+        [ 'name' => 'East', 'code' => 'E' ]
+    ];
 }

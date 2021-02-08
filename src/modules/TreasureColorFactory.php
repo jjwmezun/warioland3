@@ -5,19 +5,33 @@ namespace WarioLand3;
 
 class TreasureColorFactory
 {
-    public static function getTreasureColorById( int $id ) : ?TreasureColor
+    public static function getTreasureColorByNumber( int $number ) : TreasureColor
     {
-        return self::getTreasureColorByBindings( [ ParameterBinding::createIntBinding( 'treasure_color_id', $id ) ] );
+        if ( empty( self::$treasureColors ) )
+        {
+            self::generateTreasureColors();
+        }
+        return self::$treasureColors[ $number - 1 ];
     }
 
-    public static function getTreasureColorByOrder( int $order ) : ?TreasureColor
+    private static function generateTreasureColors() : void
     {
-        return self::getTreasureColorByBindings( [ ParameterBinding::createIntBinding( 'treasure_color_order', $order ) ] );
+        self::$treasureColors = [];
+        $i = 1;
+        foreach ( self::TREASURE_COLOR_DATA as $name )
+        {
+            self::$treasureColors[] = new TreasureColor( $i, $name );
+            ++$i;
+        }
     }
 
-    private static function getTreasureColorByBindings( array $bindings ) : ?TreasureColor
-    {
-        $data = Connection::selectOne( 'treasure_color', $bindings );
-        return ( !empty( $data ) ) ? new TreasureColor( $data[ 'treasure_color_id' ], $data[ 'treasure_color_name' ], $data[ 'treasure_color_order' ] ): null;
-    }
+    private static array $treasureColors = [];
+
+    private const TREASURE_COLOR_DATA =
+    [
+        'Gray',
+        'Red',
+        'Green',
+        'Blue'
+    ];
 }

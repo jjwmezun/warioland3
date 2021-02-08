@@ -7,48 +7,34 @@ class TreasureFactory
 {
     public static function getAllTreasures() : array
     {
-        return array_map( [ self::class, 'getTreasureFromData' ], Connection::selectAllOrderedBy( "treasure", [ "treasure_game_order" ] ) );
-    }
-
-    private static function getTreasureFromData( array $data ) : Treasure
-    {
-        return new Treasure
-        (
-            $data[ 'treasure_id' ],
-            $data[ 'treasure_name' ],
-            $data[ 'treasure_slug' ],
-            $data[ 'treasure_level_id' ],
-            $data[ 'treasure_color_id' ],
-            $data[ 'treasure_purpose' ],
-            $data[ 'treasure_game_order' ],
-            $data[ 'treasure_sequence_order' ]
-        );
-    }
-
-    /*
-    public static function resetTreasureTable() : void
-    {
-        //Connection::clearTable( "treasure" );
-        foreach ( self::TREASURES as $treasure )
+        if ( empty( self::$treasures ) )
         {
-            $level = LevelFactory::getLevelByCode( $treasure[ 'level' ] );
-            $color = TreasureColorFactory::getTreasureColorByOrder( $treasure[ 'color' ] );
-            $data =
-            [
-                "treasure_name" => $treasure[ 'name' ],
-                "treasure_slug" => Utilities::slugify( $treasure[ 'name' ] ),
-                "treasure_level_id" => $level->getId(),
-                "treasure_color_id" => $color->getId(),
-                "treasure_purpose" => $treasure[ 'purpose' ],
-                "treasure_game_order" => $treasure[ 'game_order' ],
-                "treasure_sequence_order" => $treasure[ 'sequence_order' ]
-            ];
-            Connection::insertToTable( 'treasure', $data );
+            self::generateTreasures();
         }
-        echo "Treasures reset.";
-    }*/
+        return self::$treasures;
+    }
 
-    private const TREASURES =
+    private static function generateTreasures() : void
+    {
+        self::$treasures = [];
+        foreach ( self::TREASURE_DATA as $data )
+        {
+            self::$treasures[] = new Treasure
+            (
+                $data[ 'name' ],
+                Utilities::slugify( $data[ 'name' ] ),
+                LevelFactory::getLevelByCode( $data[ 'level' ] ),
+                TreasureColorFactory::getTreasureColorByNumber( $data[ 'color' ] ),
+                $data[ 'purpose' ],
+                $data[ 'game_order' ],
+                $data[ 'sequence_order' ]
+            );
+        }
+    }
+
+    private static array $treasures = [];
+
+    private const TREASURE_DATA =
     [
         [ 'name' => '1st Music Box', 'level' => 's1', 'color' => 1, 'purpose' => 'Opens level [level s2].', 'game_order' => 1, 'sequence_order' => 10 ]
     ];

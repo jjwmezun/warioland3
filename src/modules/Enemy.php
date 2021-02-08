@@ -7,7 +7,6 @@ class Enemy
 {
     public function __construct
     (
-        private int $id,
         private string $name,
         private string $slug,
         private int $order,
@@ -19,13 +18,9 @@ class Enemy
         private string $whatYouCanDo,
         private string $grabability,
         private string $respawn,
-        private ?bool $sleepsAtNight
+        private ?bool $sleepsAtNight,
+        private array $levels
     ) {}
-
-    public function getId() : int
-    {
-        return $this->id;
-    }
 
     public function getName() : string
     {
@@ -49,12 +44,6 @@ class Enemy
 
     public function getLevels() : array
     {
-        $list = array_map
-        (
-            fn( array $data ) => LevelFactory::getLevelById( $data[ "enemy_level_level_id" ] ),
-            Connection::selectAllWhere( 'enemy_level', [ ParameterBinding::createIntBinding( 'enemy_level_enemy_id', $this->id ) ] )
-        );
-        usort( $list, fn( Level $a, Level $b ) => ( $a->getOrder() === $b->getOrder() ) ? 0 : ( ( $a->getOrder() < $b->getOrder() ) ? -1 : 1 ) );
-        return $list;
+        return $this->levels;
     }
 }

@@ -7,6 +7,24 @@ require_once( 'vendor/autoload.php' );
 Connection::init();
 Template::init();
 
+// Generate Home Page
+generatePage
+(
+    Template::generate( 'partials/home' ),
+    PageFactory::getPageBySlug( 'home' ),
+    'home',
+    'Home'
+);
+
+// Generate Minigolf Page
+generatePage
+(
+    Template::generate( 'partials/minigolf' ),
+    PageFactory::getPageBySlug( 'minigolf' ),
+    'minigolf',
+    'The Dreaded Minigolf Game'
+);
+
 // Generate Levels Archive Page
 generatePage
 (
