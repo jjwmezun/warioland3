@@ -1,4 +1,34 @@
 <header class="lv-header lv-{{ level.code|lower }}">
     <h3 class="lv-header-title lv-header-title-{{ level.code|lower }}" title="{{ level.fullName }}">{{ level.fullName }}</h3>
     {% include( "partials/level-header-content.html.twig" ) %}
+    <table>
+        {% if level.japaneseName is not empty %}
+            <tr>
+                <th scope="row">Japanese Name</th>
+                <td>{{ level.japaneseName }}{% if level.japaneseNameRomaji is not empty %} ( {{ level.japaneseNameRomaji }} ){% endif %}</td>
+            </tr>
+        {% endif %}
+        <tr>
+            <th scope="row">Difficulty</th>
+            <td>{{ level.difficultyScore }}/5</td>
+        </tr>
+        <tr>
+            <th scope="row">Personal Rating</th>
+            <td>{{ level.qualityScore }}/5</td>
+        </tr>
+        <tr>
+            <th scope="row">¿Has Minigolf Game?</th>
+            <td>{% if level.hasMinigolf %}Unfortunately, yes{% else %}Thankfully, no{% endif %}</td>
+        </tr>
+    </table>
+    {% if level.unlocked is not empty %}
+        <section>
+            <h2>Unlocked</h2>
+            <div>{{ level.unlocked|raw }}</div>
+        </section>
+    {% endif %}
+    <section>
+        <h2>Analysis</h2>
+        <div>{{ level.analysis|raw }}</div>
+    </section>
 </header>

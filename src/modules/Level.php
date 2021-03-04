@@ -11,7 +11,14 @@ class Level
         private string $slug,
         private int $number,
         private string $description,
-        private Region $region
+        private Region $region,
+        private string $analysis,
+        private string $japaneseName,
+        private string $japaneseNameRomaji,
+        private string $unlocked,
+        private bool $hasMinigolf,
+        private int $difficultyScore,
+        private int $qualityScore
     ) {}
 
     public function getName() : string
@@ -52,5 +59,40 @@ class Level
     public function getRegion() : Region
     {
         return $this->region;
+    }
+
+    public function getAnalysis() : string
+    {
+        return $this->analysis;
+    }
+
+    public function getJapaneseName() : string
+    {
+        return $this->japaneseName;
+    }
+
+    public function getJapaneseNameRomaji() : string
+    {
+        return $this->japaneseNameRomaji;
+    }
+
+    public function getUnlocked() : string
+    {
+        return $this->unlocked;
+    }
+
+    public function getHasMinigolf() : bool
+    {
+        return $this->hasMinigolf;
+    }
+
+    public function getDifficultyScore() : int
+    {
+        return $this->difficultyScore;
+    }
+
+    public function getQualityScore() : int
+    {
+        return $this->qualityScore;
     }
 }

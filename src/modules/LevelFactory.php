@@ -58,7 +58,14 @@ class LevelFactory
                 Utilities::slugify( $data[ 'name' ] ),
                 $data[ 'number' ],
                 $data[ 'desc' ] ?? '',
-                RegionFactory::getRegionByCode( $data[ 'region' ] )
+                RegionFactory::getRegionByCode( $data[ 'region' ] ),
+                $data[ 'analysis' ] ?? '',
+                $data[ 'jpName' ] ?? '',
+                $data[ 'jpNameRomaji' ] ?? '',
+                $data[ 'unlocked' ] ?? '',
+                $data[ 'minigolf' ] ?? false,
+                $data[ 'difficulty' ] ?? 1,
+                $data[ 'quality' ] ?? 1,
             );
             self::$levels[] = $level;
             self::$levels[ $level->getSlug() ] = $level;
@@ -74,7 +81,19 @@ class LevelFactory
 
     private const LEVEL_DATA =
     [
-        [ 'region' => 'N', 'number' => 1, 'name' => 'Out of the Woods', 'desc' => '<p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearhead true] & [enemy webber true], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p>' ],
+        [
+            'region' => 'N',
+            'number' => 1,
+            'name' => 'Out of the Woods',
+            'desc' => '<p>“Out of the Woods” is the 1st &, naturally, easiest level. Most o’ it is a bright, small forest littered with easy-to-dodge [enemy spearhead true] & [enemy webber true], with a li’l cave, a li’l lake, & a tall tree area for later treasures.</p>',
+            'analysis' => '<p>For a 1st level, “Out of the Woods” could’ve been much weaker than it turned out. Yes, starting your game in a green forest is 1 o’ the most cliché things you could do, specially compared to <i>Wario Land II</i> starting you out in Wario’s castle full o’ walls to break for coins. But while that level & its game had a mo’ interesting setting, “Out of the Woods”, as well as <i>Wario Land 3</i> in general, has a much mo’ interesting level layout.</p>',
+            'jpName' => '出発の森',
+            'jpNameRomaji' => 'Shuppatsu no Mori',
+            'unlocked' => '<p>Being the 1st level o’ the game, this is the only level not unlocked thru a treasure: The Temple you start the game @ leads directly to it.</p>',
+            'minigolf' => true,
+            'difficulty' => 2,
+            'quality' => 3
+        ],
         [ 'region' => 'N', 'number' => 2, 'name' => 'The Peaceful Village' ],
         [ 'region' => 'N', 'number' => 3, 'name' => 'The Vast Plain' ],
         [ 'region' => 'N', 'number' => 4, 'name' => 'Bank of the Wild River' ],
