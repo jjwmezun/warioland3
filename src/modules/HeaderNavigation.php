@@ -13,7 +13,7 @@ class HeaderNavigation
             {
                 if ( self::isRawLink( $item ) )
                 {
-                    return new Link( '/' . $item[ 'url' ], $item[ 'title' ] );
+                    return new Link( '/' . $item[ 'url' ], $item[ 'title' ], $item[ 'slug' ] );
                 }
                 else if ( self::isPageLink( $item ) )
                 {
@@ -23,7 +23,7 @@ class HeaderNavigation
                         throw new \Exception( "Missing page with slug: " . $item[ 'slug' ] );
                     }
                     $title = $item[ 'title' ] ?? $page->getTitle(); // O’erride title if manually set.
-                    return new Link( '/' . $item[ 'slug' ] . '/', $title );
+                    return new Link( '/' . $item[ 'slug' ] . '/', $title, $item[ 'slug' ] );
                 }
                 throw new \Exception( "Header navigation has invalid item" );
             },
@@ -43,7 +43,7 @@ class HeaderNavigation
 
     private const DATA =
     [
-        [ 'url' => '', 'title' => 'About' ],
+        [ 'url' => '', 'title' => 'About', 'slug' => 'about' ],
         [ 'slug' => 'enemies' ],
         [ 'slug' => 'levels' ],
         [ 'slug' => 'treasures' ],

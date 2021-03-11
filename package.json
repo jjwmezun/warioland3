@@ -1,0 +1,26 @@
+{
+  "name": "warioland3",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "watch": "sass --watch --style=compressed --no-source-map dev/sass:public/css",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jjwmezun/warioland3.git"
+  },
+  "author": "J. J. W. Mezun",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jjwmezun/warioland3/issues"
+  },
+  "homepage": "https://github.com/jjwmezun/warioland3#readme",
+  "devDependencies": {
+    "sass": "^1.32.8"
+  }
+}

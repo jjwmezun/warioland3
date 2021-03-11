@@ -1,28 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-    <meta charset="utf-8" />
     <head>
         <title>Wario Land 3 &ndash; Civilization&rsquo;s greatest achievement.</title>
-        <link href="https://fonts.googleapis.com/css?family=Roboto:400,900,400italic,700,700italic" rel="stylesheet" type="text/css" />
-        <link href="https://fonts.googleapis.com/css?family=Rambla:700" rel="stylesheet" />
-        <link href="css/main.css" rel="stylesheet" />
-        <link href="css/index.css" rel="stylesheet" />
+        <meta charset="utf-8">
+        <link href="https://fonts.googleapis.com/css?family=Rambla:400,700" rel="stylesheet">
+        <link href="/css/main.css" rel="stylesheet">
     </head>
     <body class="wl3-body">
         <header class="wl3-site-header"><h1 class="wl3-site-header-title"><a href="/">Wario Land 3</a></h1></header>
-        {% if header.navigation is not empty %}
-            <nav id="wl3-site-nav" class="wl3-site-nav">
-                <ul class="wl3-site-nav-list">
-                    {% for link in header.navigation %}
-                        <li class="wl3-site-nav-list-item wl3-site-nav-list-item-about"><a class="wl3-site-nav-link wl3-site-nav-link-about" href="{{ link.url }}">{{ link.title }}</a></li>
-                    {% endfor %}
-                </ul>
-            </nav>
-        {% endif %}
-        <form action="/search/", method="get">
-            <input type="text" name="query">
-            <input type="submit" value="¡Search!">
-        </form>
+        <nav id="head-nav" class="head-nav">
+            <ul class="head-nav-l">
+                {% for link in header.navigation %}
+                    <li class="head-nav-i head-nav-i-{{ link.slug }}"><a class="head-nav-a head-nav-a-{{ link.slug }}" href="{{ link.url }}">{{ link.title }}</a></li>
+                {% endfor %}
+            </ul>
+            <form action="/search/", method="get">
+                <input type="text" name="query">
+                <input type="submit" value="¡Search!">
+            </form>
+        </nav>
         <section class="wl3-primary">{% block content %}{% endblock %}</section>
         <footer class="wl3-footer">
             <div class="wl3-footer-content">

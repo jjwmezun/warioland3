@@ -1,0 +1,36 @@
+html,
+body
+    margin: 0
+    padding: 0
+
+html
+    box-sizing: border-box
+
+*,
+*:before,
+*:after
+    box-sizing: inherit
+    
+body
+    background-image: url( "/img/bg.png" )
+    font-family: Rambla, sans-serif
+
+.head-nav
+    background-color: #000
+
+.head-nav-l
+    list-style-type: none
+    padding: 0
+
+.head-nav-i
+    display: inline-block
+
+.head-nav-a
+    &,
+    &:link,
+    &:visited
+        color: #fff
+        text-decoration: none
+        transition: color 0.5s
+    &:hover
+        color: yellow

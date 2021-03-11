@@ -15,9 +15,15 @@ class Link
         return $this->title;
     }
 
+    public function getSlug() : string
+    {
+        return $this->slug;
+    }
+
     public function __construct
     (
         private string $url,
-        private string $title
+        private string $title,
+        private string $slug
     ) {}
 }
