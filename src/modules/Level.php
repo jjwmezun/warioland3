@@ -18,7 +18,9 @@ class Level
         private string $unlocked,
         private bool $hasMinigolf,
         private int $difficultyScore,
-        private int $qualityScore
+        private int $qualityScore,
+        private array $musicCoins,
+        private array $treasuresNeededForMusicCoins
     ) {}
 
     public function getName() : string
@@ -94,5 +96,20 @@ class Level
     public function getQualityScore() : int
     {
         return $this->qualityScore;
+    }
+
+    public function getLevelChests() : array
+    {
+        return LevelChestFactory::getChestsByLevel( $this );
+    }
+
+    public function getMusicCoins() : array
+    {
+        return $this->musicCoins;
+    }
+
+    public function getTreasuresNeededForMusicCoins() : array
+    {
+        return $this->treasuresNeededForMusicCoins;
     }
 }

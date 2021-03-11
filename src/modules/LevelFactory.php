@@ -66,6 +66,8 @@ class LevelFactory
                 $data[ 'minigolf' ] ?? false,
                 $data[ 'difficulty' ] ?? 1,
                 $data[ 'quality' ] ?? 1,
+                $data[ 'musicCoins' ] ?? [],
+                $data[ 'treasuresNeededForMusicCoins' ] ?? []
             );
             self::$levels[] = $level;
             self::$levels[ $level->getSlug() ] = $level;
@@ -92,7 +94,19 @@ class LevelFactory
             'unlocked' => '<p>Being the 1st level o’ the game, this is the only level not unlocked thru a treasure: The Temple you start the game @ leads directly to it.</p>',
             'minigolf' => true,
             'difficulty' => 2,
-            'quality' => 3
+            'quality' => 3,
+            'treasuresNeededForMusicCoins' => [ 'red-glove', 'red-overalls', 'winged-boot' ],
+            'musicCoins' =>
+            [
+                'In the 1st area pick up a [enemy spearhead] & break the throw blocks ’bove the 1st screen transition, climb up the ledge, & jump ’cross the platform toward the left, dodging the [enemy appleby true]. The music coin is floating ’bove the start o’ the level.',
+                'Ground pound the blocks right o’ the door to the green chest room in the 2nd area ( if you have the red overalls ) or break the fire blocks using the fire spurter in the area with the green key. Either way will lead to a li’l underground cave with a music coin.',
+                'Ground pound ( you need red overalls ) round the door to the green chest room in the 2nd area to make the [enemy webber] fall toward the ground. When they’re low ’nough jump on them to reach the top o’ the cliff. Jump ’cross the leaves & thin platforms left & then right till you reach an orange thin platform on a tree. Ground pound to make a [enemy webber] fall o’er the next platform & jump on them. When they climb back to the top you’ll be able to reach the next music coin.',
+                'In the green chest room ( the lake with the falling leaves ) there’s a music coin in the lake ’tween the 2nd & 3rd rocky cliffs that’s easy to get with the [treasure-icon super-flippers] by jumping into the lake & swimming right o’er to it.',
+                '@ the rightmost area o’ the red chest room there’s a li’l alcove under the area with the red key that can be reached when flat. Use the [enemy richtertoffen] to become flat while avoiding the [enemy grab-bot], who will try to turn you back to normal.',
+                'In the rightmost area o’ the level ( the area with the fire spurter & green key ) super jump off the [enemy spearhead] to reach the area with the green key & then super jump off o’ the [enemy blue-bird] to reach 2 thin platforms, which lead to a music coin.',
+                'In the rightmost area o’ the level ( the area with the fire spurter & green key ) use the slope to roll under the li’l alcove under the cliff with the green key, where a music coin is hiding.',
+                '@ the top o’ the 1st room o’ the tree area ( where the blue chest & key are found ) use the [enemy doughnuteer] to become fat & break the donut blocks all the way down to a secret room under the 1st floor where a music coin lies.',
+            ]
         ],
         [ 'region' => 'N', 'number' => 2, 'name' => 'The Peaceful Village' ],
         [ 'region' => 'N', 'number' => 3, 'name' => 'The Vast Plain' ],

@@ -8,6 +8,8 @@ class Enemy
     public function __construct
     (
         private string $name,
+        private string $fullName,
+        private string $pluralName,
         private string $slug,
         private int $order,
         private string $japaneseName,
@@ -27,9 +29,14 @@ class Enemy
         return $this->name;
     }
 
+    public function getFullName() : string
+    {
+        return $this->fullName;
+    }
+
     public function getPluralName() : string
     {
-        return $this->name . 's';
+        return $this->pluralName;
     }
 
     public function getSlug() : string

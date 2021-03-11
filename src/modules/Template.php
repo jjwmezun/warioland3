@@ -12,6 +12,7 @@ class Template
             'navigation' => HeaderNavigation::getList()
         ];
         $attributes[ 'path' ] = new PathFactory();
+        $attributes[ 'treasureFactory' ] = new TreasureFactory();
         return self::doShortcodes
         (
             self::$twig->render
@@ -37,6 +38,10 @@ class Template
                 {
                     return false;
                 }
+                if ( $args[ 0 ] === 'temple' )
+                {
+                    return '“The Temple”';
+                }
                 $level = LevelFactory::getLevelByCode( $args[ 0 ] );
                 return ( $level ) ? '<a href="' . PathFactory::getLevelPath( $level ) . '">“' . $level->getFullName() . '”</a>' : false;
             },
@@ -52,7 +57,14 @@ class Template
                 {
                     $plural = boolval( $args[ 1 ] );
                 }
-                $enemy = EnemyFactory::getEnemyBySlug( $args[ 0 ] );
+                try
+                {
+                    $enemy = EnemyFactory::getEnemyBySlug( $args[ 0 ] );
+                }
+                catch ( \Exception $exception )
+                {
+                    var_dump( $args[ 0 ] );
+                }
                 return ( $enemy ) ? '<a href="' . PathFactory::getEnemyPath( $enemy ) . '">' . ( ( $plural ) ? $enemy->getPluralName() : $enemy->getName() ) . '</a>' : false;
             }
         ];

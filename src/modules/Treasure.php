@@ -40,4 +40,14 @@ class Treasure
     {
         return $this->purpose;
     }
+
+    public function getGameOrder() : int
+    {
+        return $this->gameOrder;
+    }
+
+    public function getSequenceOrder() : int
+    {
+        return $this->sequenceOrder;
+    }
 }

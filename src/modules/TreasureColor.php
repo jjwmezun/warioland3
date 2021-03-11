@@ -20,4 +20,9 @@ class TreasureColor
     {
         return $this->name;
     }
+
+    public function getSlug() : string
+    {
+        return strtolower( $this->name );
+    }
 }
