@@ -54,6 +54,19 @@ class Connection
         );
     }
 
+    static public function selectWhere( string $table, array $conditions, bool $distinct = false, string $methodName = "selectWhere" ) : array
+    {
+        if ( empty( $conditions ) )
+        {
+            throw new \Exception( "Error calling Connection::$methodName with table $table \$conditions can’t be left empty" );
+        }
+        return self::fetchAll
+        (
+            "select" . ( ( $distinct ) ? " distinct" : "" ) . " * from $table where " . implode( " and ", array_map( fn( ParameterBinding $condition ) => $condition->getName() . " = :" . $condition->getName(), $conditions ) ),
+            $conditions
+        );
+    }
+
     static public function init() : void
     {
         $credentials = self::getCredentials();
@@ -67,19 +80,6 @@ class Connection
     //  PRIVATE
     //
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    static private function selectWhere( string $table, array $conditions, bool $distinct, string $methodName ) : array
-    {
-        if ( empty( $conditions ) )
-        {
-            throw new \Exception( "Error calling Connection::$methodName with table $table \$conditions can’t be left empty" );
-        }
-        return self::fetchAll
-        (
-            "select" . ( ( $distinct ) ? " distinct" : "" ) . " * from $table where " . implode( " and ", array_map( fn( ParameterBinding $condition ) => $condition->getName() . " = :" . $condition->getName(), $conditions ) ),
-            $conditions
-        );
-    }
 
     static private function fetchAll( string $prepare, array $bindings = [] ) : array
     {

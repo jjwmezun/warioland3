@@ -1,18 +1,32 @@
 <h1>Treasures</h1>
-<table class="wl3-table">
-    <thead>
-        <tr>
-            <th scope="col">Item</th>
-            <th scope="col" colspan="2">Location</th>
-            <th scope="col">Purpose</th>
-        </tr>
-    </thead>
-{% for treasure in treasures %}
-    <tr>
-        <th scope="row"><img src="/img/treasure-{{ treasure.slug }}.png" alt="{{ treasure.name }}" /></th>
-        <td>{{ treasure.level.fullName }}</td>
-        <td>{{ treasure.color.name }}</td>
-        <td>{{ treasure.purpose }}</td>
-    </tr>
-{% endfor %}
-</table>
+
+<section id="temple-order">
+    <h2>Temple Order</h2>
+</section>
+
+<section id="options-order">
+    <h2>Options Order</h2>
+    <table class="wl3-table">
+        <thead>
+            <tr>
+                <th scope="col">Item</th>
+                <th scope="col" colspan="2">Location</th>
+                <th scope="col">Purpose</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for treasure in treasures %}
+                <tr>
+                    <th scope="row"><img src="/img/treasure-{{ treasure.slug }}.png" alt="{{ treasure.name }}" /></th>
+                    <td>{{ treasure.level.fullName }}</td>
+                    <td>{{ treasure.color.name }}</td>
+                    <td>{{ treasure.purpose }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</section>
+
+<section id="level-order">
+    <h2>Level Order</h2>
+</section>

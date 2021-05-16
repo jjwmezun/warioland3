@@ -24,6 +24,6 @@ class Link
     (
         private string $url,
         private string $title,
-        private string $slug
+        private string $slug = ''
     ) {}
 }

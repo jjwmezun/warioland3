@@ -12,10 +12,10 @@
                 <img class="wl3-site-logo-img" src="/img/wario-land-3-logo.png" alt="Wario Land 3" />
             </a>
         </header>
-        <nav id="head-nav" class="head-nav">
-            <ul class="head-nav-l">
+        <nav class="wl3-site-nav">
+            <ul class="wl3-site-nav-l">
                 {% for link in header.navigation %}
-                    <li class="head-nav-i head-nav-i-{{ link.slug }}"><a class="head-nav-a head-nav-a-{{ link.slug }}" href="{{ link.url }}">{{ link.title }}</a></li>
+                    <li class="wl3-site-nav-i wl3-site-nav-i-{{ link.slug }}"><a class="wl3-site-nav-a wl3-site-nav-a-{{ link.slug }}" href="{{ link.url }}">{{ link.title }}</a></li>
                 {% endfor %}
             </ul>
             <form action="/search/", method="get">
@@ -23,6 +23,13 @@
                 <input type="submit" value="¡Search!">
             </form>
         </nav>
+        {% if page and page.hasList %}
+            <nav class="wl3-page-nav">
+                <ul class="wl3-page-nav-l">
+                    {% for link in page.list %}<li class="wl3-page-nav-i"><a class="wl3-page-nav-a" href="{{ link.url }}">{{ link.title }}</a></li>{% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
         <section class="wl3-primary">{% block content %}{% endblock %}</section>
         <footer class="wl3-footer">
             <div class="wl3-footer-content">

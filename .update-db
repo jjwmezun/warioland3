@@ -7,6 +7,8 @@ require_once( 'vendor/autoload.php' );
 Connection::init();
 Template::init();
 
+Connection::clearTable( 'page_navigation' );
+
 // Generate Home Page
 generatePage
 (
@@ -62,10 +64,11 @@ generatePage
     Template::generate( 'partials/treasures', [ 'treasures' => TreasureFactory::getAllTreasures() ] ),
     PageFactory::getPageBySlug( 'treasures' ),
     'treasures',
-    'Treasures'
+    'Treasures',
+    [ new Link( '#temple-order', 'Temple Order' ), new Link( '#options-order', 'Options Order' ), new Link( '#level-order', 'Level Order' ) ]
 );
 
-function generatePage( string $content, ?Page $page, string $slug, string $title ) : void
+function generatePage( string $content, ?Page $page, string $slug, string $title, array $navigation = [] ) : void
 {
     if ( $page === null )
     {
@@ -92,5 +95,22 @@ function generatePage( string $content, ?Page $page, string $slug, string $title
                 'page_slug' => $slug
             ]
         );
+    }
+
+    if ( !empty( $navigation ) )
+    {
+        $pageId = Connection::selectOne( 'page', [ ParameterBinding::createStringBinding( 'page_slug', $slug ) ] )[ 'page_id' ];
+        foreach ( $navigation as $link )
+        {
+            Connection::insertToTable
+            (
+                'page_navigation',
+                [
+                    'page_id' => $pageId,
+                    'page_navigation_url' => $link->getUrl(),
+                    'page_navigation_title' => $link->getTitle()
+                ]
+            );
+        }
     }
 }

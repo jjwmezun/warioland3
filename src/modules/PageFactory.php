@@ -22,6 +22,6 @@ class PageFactory
 
     static private function createPageFromData( array $data ) : Page
     {
-        return new Page( $data[ 'page_title' ], $data[ 'page_content' ] );
+        return new Page( $data[ 'page_id' ], $data[ 'page_title' ], $data[ 'page_content' ] );
     }
 }

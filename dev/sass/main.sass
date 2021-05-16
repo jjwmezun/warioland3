@@ -5,6 +5,7 @@ body
 
 html
     box-sizing: border-box
+    scroll-behavior: smooth
 
 *,
 *:before,
@@ -25,21 +26,53 @@ body
 .wl3-site-logo-img
     display: inline-block
 
-.head-nav
+.wl3-site-nav
     background-color: #000
-    text-transform: uppercase
 
-.head-nav-l
+.wl3-site-nav-l,
+.wl3-page-nav-l
     list-style-type: none
     text-transform: lowercase
     font-variant: small-caps
     padding: 0
+    margin: 0
 
-.head-nav-i
+.wl3-site-nav-i,
+.wl3-page-nav-i
+    display: inline-block
+
+.wl3-site-nav-a,
+.wl3-page-nav-a
     display: inline-block
     padding: .25em .5em
 
-.head-nav-a
+.wl3-page-nav
+    background: #4a0d80
+
+.wl3-page-nav-l
+    border-bottom: 2px solid #4a0d80
+
+.wl3-page-nav-i
+    border-top: 2px solid #4a0d80
+    border-left: 2px solid #4a0d80
+
+.wl3-page-nav-a
+    &,
+    &:link,
+    &:visited
+        text-decoration: none
+        transition: background .5s, color .5s
+        background-color: #fff
+        color: #4a0d80
+    &:hover
+        color: #fff
+        background-color: #4a0d80
+
+.wl3-page-nav-a
+    display: block
+    padding: .25em .5em
+
+.wl3-site-nav-a
     &,
     &:link,
     &:visited
@@ -62,10 +95,14 @@ body
 
 .wl3-primary
     padding: 0 1em
-    h1
+    h1,
+    h2
         font-family: englebert, sans-serif
         text-align: center
+    h1
         font-size: 2em
+    h2
+        font-size: 1.75em
     a:link,
     a:visited
         color: #e86038
