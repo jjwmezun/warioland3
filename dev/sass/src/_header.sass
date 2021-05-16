@@ -1,0 +1,110 @@
+.wl3-site-logo
+    padding: 0.5em 0
+    text-align: center
+    background-color: #c8f8e8
+    background-image: url( "/img/mountain-bg.png" )
+    background-repeat: repeat-x
+
+.wl3-site-logo-link,
+.wl3-site-logo-img
+    display: inline-block
+
+.wl3-site-logo-img
+    max-width: 100%
+    height: auto
+
+.wl3-site-nav,
+.wl3-page-nav
+    font-size: 125%
+
+.wl3-site-nav
+    background-color: #000
+    padding-top: 0.25em
+
+.wl3-site-nav-l,
+.wl3-page-nav-l
+    list-style-type: none
+    text-transform: lowercase
+    font-variant: small-caps
+    padding: 0
+    margin: 0
+
+.wl3-site-nav-i,
+.wl3-page-nav-i
+    display: inline-block
+
+.wl3-site-nav-l,
+.wl3-page-nav-l
+    margin: 0
+
+.wl3-site-nav-a,
+.wl3-page-nav-a
+    display: inline-block
+    padding: .25em .5em
+
+.wl3-site-nav-i
+    padding-bottom: 0.25em
+
+.wl3-page-nav
+    background: #4a0d80
+
+.wl3-page-nav-l
+    border-bottom: 2px solid #4a0d80
+
+.wl3-page-nav-i
+    border-top: 2px solid #4a0d80
+    border-left: 2px solid #4a0d80
+
+.wl3-page-nav-a
+    &,
+    &:link,
+    &:visited
+        text-decoration: none
+        transition: background 0.5s, color 0.5s
+        background-color: #fff
+        color: #4a0d80
+    &:hover
+        color: #fff
+        background-color: #4a0d80
+
+.wl3-page-nav-a
+    display: block
+    padding: .25em .5em
+
+.wl3-site-nav-a
+    &,
+    &:link,
+    &:visited
+        color: #fff
+        text-decoration: none
+        transition: color 0.5s
+    &:hover
+        color: #f8f898
+
+.wl3-header-search-query
+    border-radius: none
+    border: none
+    font-size: 1em
+    padding: 0.25em
+
+.wl3-header-search-submit
+    text-transform: lowercase
+    font-variant: small-caps
+    border-radius: none
+    border: none
+    background-color: #fff
+    transition: background-color 0.5s, color 0.5s
+    color: #000
+    font-size: 1em
+    padding: 0.25em 0.5em
+    cursor: pointer
+    &:hover
+        background-color: #000
+        color: #fff
+
+@media ( min-width: 1000px )
+    .wl3-site-nav
+        display: grid
+        grid-template-columns: 1fr max-content
+        align-items: center
+        justify-content: space-between

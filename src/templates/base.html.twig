@@ -18,9 +18,9 @@
                     <li class="wl3-site-nav-i wl3-site-nav-i-{{ link.slug }}"><a class="wl3-site-nav-a wl3-site-nav-a-{{ link.slug }}" href="{{ link.url }}">{{ link.title }}</a></li>
                 {% endfor %}
             </ul>
-            <form action="/search/", method="get">
-                <input type="text" name="query">
-                <input type="submit" value="¡Search!">
+            <form class="wl3-header-search" action="/search/", method="get">
+                <input class="wl3-header-search-query" type="text" name="query">
+                <input class="wl3-header-search-submit" type="submit" value="¡Search!">
             </form>
         </nav>
         {% if page and page.hasList %}
