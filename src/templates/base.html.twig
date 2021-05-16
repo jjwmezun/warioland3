@@ -3,11 +3,15 @@
     <head>
         <title>Wario Land 3 &ndash; Civilization&rsquo;s greatest achievement.</title>
         <meta charset="utf-8">
-        <link href="https://fonts.googleapis.com/css?family=Rambla:400,700" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com"><link href="https://fonts.googleapis.com/css2?family=Englebert&family=Rambla:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
         <link href="/css/main.css" rel="stylesheet">
     </head>
     <body class="wl3-body">
-        <header class="wl3-site-header"><h1 class="wl3-site-header-title"><a href="/">Wario Land 3</a></h1></header>
+        <header class="wl3-site-logo">
+            <a class="wl3-site-logo-link" href="/">
+                <img class="wl3-site-logo-img" src="/img/wario-land-3-logo.png" alt="Wario Land 3" />
+            </a>
+        </header>
         <nav id="head-nav" class="head-nav">
             <ul class="head-nav-l">
                 {% for link in header.navigation %}

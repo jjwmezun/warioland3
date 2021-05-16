@@ -12,18 +12,32 @@ html
     box-sizing: inherit
     
 body
-    background-image: url( "/img/bg.png" )
+    background-image: url( "/img/cloud-bg.png?m=20210515" )
     font-family: Rambla, sans-serif
+
+.wl3-site-logo
+    padding: 0.5em 0
+    text-align: center
+    background-image: url( "/img/mountain-bg.png" )
+    background-repeat: repeat-x
+
+.wl3-site-logo-link,
+.wl3-site-logo-img
+    display: inline-block
 
 .head-nav
     background-color: #000
+    text-transform: uppercase
 
 .head-nav-l
     list-style-type: none
+    text-transform: lowercase
+    font-variant: small-caps
     padding: 0
 
 .head-nav-i
     display: inline-block
+    padding: .25em .5em
 
 .head-nav-a
     &,
@@ -33,4 +47,44 @@ body
         text-decoration: none
         transition: color 0.5s
     &:hover
-        color: yellow
+        color: #f8c810
+
+.wl3-footer
+    background-image: url( "/img/water-bg.png" )
+    background-repeat: repeat-x
+    font-size: .8em
+    line-height: 1.3em
+    padding-top: 32px
+
+.wl3-footer-content
+    background-color: #5868f8
+    padding: .5em 1em
+
+.wl3-primary
+    padding: 0 1em
+    h1
+        font-family: englebert, sans-serif
+        text-align: center
+        font-size: 2em
+    a:link,
+    a:visited
+        color: #e86038
+        text-decoration: underline
+    a:hover
+        text-decoration: none
+
+.wl3-table
+    max-width: 60em
+    border-collapse: collapse
+    margin: 0 auto
+    &,
+    td,th
+        border: 2px solid #000
+        background-color: #fff
+        padding: 0.5em
+    thead th
+        background-color: #000
+        color: #fff
+    tr:hover
+        th,td
+            background-color: #f8f898

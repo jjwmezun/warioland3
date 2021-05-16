@@ -66,6 +66,19 @@ class Template
                     var_dump( $args[ 0 ] );
                 }
                 return ( $enemy ) ? '<a href="' . PathFactory::getEnemyPath( $enemy ) . '">' . ( ( $plural ) ? $enemy->getPluralName() : $enemy->getName() ) . '</a>' : false;
+            },
+            'treasure-icon' => function( array $args ) : string|bool
+            {
+                try
+                {
+                    $treasure = TreasureFactory::getTreasureBySlug( $args[ 0 ] );
+                }
+                catch ( \Exception $exception )
+                {
+                    var_dump( $args[ 0 ] );
+                    return false;
+                }
+                return '<img src="/img/treasure-' . $treasure->getSlug() . '.png" alt="' . $treasure->getName() . '" />';
             }
         ];
     }

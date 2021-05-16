@@ -1,5 +1,5 @@
 <h1>Treasures</h1>
-<table>
+<table class="wl3-table">
     <thead>
         <tr>
             <th scope="col">Item</th>
@@ -9,7 +9,7 @@
     </thead>
 {% for treasure in treasures %}
     <tr>
-        <th scope="row">{{ treasure.name }}</th>
+        <th scope="row"><img src="/img/treasure-{{ treasure.slug }}.png" alt="{{ treasure.name }}" /></th>
         <td>{{ treasure.level.fullName }}</td>
         <td>{{ treasure.color.name }}</td>
         <td>{{ treasure.purpose }}</td>

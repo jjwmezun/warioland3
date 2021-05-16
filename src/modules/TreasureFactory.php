@@ -343,7 +343,7 @@ class TreasureFactory
             'name' => 'Top Half o’ Scroll',
             'level' => 'w1',
             'color' => 1,
-            'purpose' => 'Combined with [treasure-icon bottom-half-of-scroll] opens level [level w2] by, um, making a tornado disappear. Yeah, I don’t get it, either.',
+            'purpose' => 'Combined with [treasure-icon bottom-half-o-scroll] opens level [level w2] by, um, making a tornado disappear. Yeah, I don’t get it, either.',
             'game_order' => 34,
             'sequence_order' => 4
         ],
@@ -351,7 +351,7 @@ class TreasureFactory
             'name' => 'Bottom Half o’ Scroll',
             'level' => 'w1',
             'color' => 2,
-            'purpose' => 'Combined with [treasure-icon top-half-of-scroll] opens level [level w2] by, um, making a tornado disappear. Yeah, I don’t get it, either.',
+            'purpose' => 'Combined with [treasure-icon top-half-o-scroll] opens level [level w2] by, um, making a tornado disappear. Yeah, I don’t get it, either.',
             'game_order' => 35,
             'sequence_order' => 5
         ],
